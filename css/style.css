@@ -8,6 +8,11 @@ header {
   header blockquote p {
     font-family: "Shadows Into Light", cursive; }
 
+.main-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%; }
+
 /*!
  * Bootstrap v4.5.0 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
