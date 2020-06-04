@@ -1,5 +1,10 @@
+:root {
+  height: 100%; }
+
 body {
-  background: url("../img/background.jpg"); }
+  background: url("../img/background.jpg") center;
+  min-height: 100%;
+  position: relative; }
 
 header {
   font-family: "Noto Sans", sans-serif;
