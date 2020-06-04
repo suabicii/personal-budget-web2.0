@@ -41,15 +41,95 @@
             <div class="container py-3 px-0">
                 <div class="row">
                     <div class="col-6">
-                        <button class="btn btn-lg btn-block btn-primary">Zarejestruj się <i
-                                class="fas fa-user-plus"></i></button>
+                        <button class="btn btn-lg btn-block btn-primary" data-toggle="modal"
+                            data-target="#registerModal">Zarejestruj się <i class="fas fa-user-plus"></i></button>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-lg btn-block btn-success">Zaloguj się <i class="fas fa-key"></i></button>
+                        <button class="btn btn-lg btn-block btn-success" data-toggle="modal"
+                            data-target="#loginModal">Zaloguj się <i class="fas fa-key"></i></button>
                     </div>
                 </div>
             </div>
         </section>
+        <!-- Modal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Rejestracja</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="name">Imię</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Jan">
+                            </div>
+                            <div class="form-group">
+                                <label for="surname">Nazwisko</label>
+                                <input type="text" name="surname" id="surname" class="form-control"
+                                    placeholder="Kowalski">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" name="email" id="email" class="form-control"
+                                    placeholder="nazwa@domena.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Login</label>
+                                <input type="text" name="username" id="username" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Hasło</label>
+                                <input type="password" name="password" id="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Potwierdź hasło</label>
+                                <input type="password" name="password" id="password" class="form-control">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary">Załóż konto <i
+                                class="fas fa-user-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Logowanie</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="username">Login</label>
+                                <input type="text" name="username" id="username" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Hasło</label>
+                                <input type="password" name="password" id="password" class="form-control">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="main-footer bg-dark pt-2">
