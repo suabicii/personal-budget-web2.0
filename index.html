@@ -62,14 +62,15 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form action="">
+                    <form action="">
+                        <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                 </div>
                                 <label class="sr-only" for="name">Imię</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Imię">
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Imię"
+                                    required>
                             </div>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -77,14 +78,15 @@
                                 </div>
                                 <label class="sr-only" for="surname">Nazwisko</label>
                                 <input type="text" name="surname" id="surname" class="form-control"
-                                    placeholder="Nazwisko">
+                                    placeholder="Nazwisko" required>
                             </div>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-at"></i></div>
                                 </div>
                                 <label class="sr-only" for="email">E-mail</label>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="E-mail">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="E-mail"
+                                    required>
                             </div>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -92,7 +94,7 @@
                                 </div>
                                 <label class="sr-only" for="username">Login</label>
                                 <input type="text" name="username" id="username" class="form-control"
-                                    placeholder="Login">
+                                    placeholder="Login" required>
                             </div>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -100,23 +102,23 @@
                                 </div>
                                 <label class="sr-only" for="password">Hasło</label>
                                 <input type="password" name="password" id="password" class="form-control"
-                                    placeholder="Hasło">
+                                    placeholder="Hasło" required>
                             </div>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
-                                <label class="sr-only" for="password">Potwierdź hasło</label>
-                                <input type="password" name="password" id="password" class="form-control"
-                                    placeholder="Powtórz hasło">
+                                <label class="sr-only" for="passwordConfirmation">Potwierdź hasło</label>
+                                <input type="passwordConfirmation" name="passwordConfirmation" id="passwordConfirmation"
+                                    class="form-control" placeholder="Powtórz hasło" required>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                        <button type="button" class="btn btn-primary">Załóż konto <i
-                                class="fas fa-user-plus"></i></button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-primary">Załóż konto <i
+                                    class="fas fa-user-plus"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -131,30 +133,30 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form action="">
+                    <form action="">
+                        <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text pr-2"><i class="fas fa-user-shield"></i></div>
                                 </div>
-                                <label class="sr-only" for="username">Login</label>
-                                <input type="text" name="username" id="username" class="form-control"
-                                    placeholder="Login">
+                                <label class="sr-only" for="userLogin">Login</label>
+                                <input type="text" name="userLogin" id="userLogin" class="form-control"
+                                    placeholder="Login" required>
                             </div>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
-                                <label class="sr-only" for="password">Hasło</label>
-                                <input type="password" name="password" id="password" class="form-control"
-                                    placeholder="Hasło">
+                                <label class="sr-only" for="authorization">Hasło</label>
+                                <input type="authorization" name="authorization" id="authorization" class="form-control"
+                                    placeholder="Hasło" required>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                        <button type="button" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <a href="main.html" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
