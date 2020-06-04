@@ -1,5 +1,6 @@
 :root {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -28,4 +29,14 @@ header {
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  header {
+    .header-content {
+      h1 {
+        font-size: 3rem;
+      }
+    }
+  }
 }
