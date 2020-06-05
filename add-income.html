@@ -89,6 +89,26 @@
                 </div>
             </div>
         </section>
+        <!-- Modal -->
+        <div class="modal fade" id="addIncomeConfirmation" tabindex="-1" role="dialog"
+            aria-labelledby="addIncomeConfirmationLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success" id="addIncomeConfirmationLabel">Sukces</h5>
+                        <a href="main.html" class="close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="text-center">Przychód został dodany</h3>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <a href="main.html" class="btn btn-primary">OK <i class="far fa-smile"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="main-footer bg-dark pt-2">
@@ -101,6 +121,13 @@
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        $("form").submit(function (evt) {
+            evt.preventDefault();
+            $("#addIncomeConfirmation").modal('show');
+        });
+    </script>
 </body>
 
 </html>
