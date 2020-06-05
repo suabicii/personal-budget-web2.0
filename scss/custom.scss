@@ -25,6 +25,17 @@ header {
   }
 }
 
+.adding-incomes {
+  position: relative;
+
+  .container-custom {
+    width: 576px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .main-footer {
   position: absolute;
   bottom: 0;
@@ -37,6 +48,12 @@ header {
       h1 {
         font-size: 3rem;
       }
+    }
+  }
+
+  .adding-incomes {
+    .container-custom {
+      width: 100%;
     }
   }
 }

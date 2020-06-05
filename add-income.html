@@ -52,6 +52,42 @@
                 </div>
             </nav>
         </section>
+
+        <section class="adding-incomes">
+            <div class="container-custom border rounded bg-white mt-2 py-2">
+                <div class="row justify-content-center">
+                    <form action="">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
+                            </div>
+                            <label class="sr-only" for="amount">Kwota</label>
+                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota"
+                                required>
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text pr-2"><i class="fas fa-money-check"></i></div>
+                            </div>
+                            <label class="sr-only" for="category">Kategoria</label>
+                            <select name="category" id="category" class="form-control">
+                                <option value="1">Wynagrodzenie</option>
+                                <option value="2">Odsetki</option>
+                                <option value="3">Sprzedaż na allegro</option>
+                                <option value="4">Inne</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2">
+                            <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
+                            <textarea name="" id="" rows="4" class="form-control"
+                                placeholder="Komentarz (opcjonalnie"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-some">Dodaj</button>
+                        <a href="main.html" class="btn btn-danger">Anuluj</a>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="main-footer bg-dark pt-2">
