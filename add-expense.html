@@ -83,8 +83,10 @@
                             </div>
                             <label class="sr-only" for="category">Kategoria</label>
                             <select name="category" id="category" class="form-control" required>
+                                <option selected disabled>Wybierz kategorię</option>
+                                <!-- Moim zdaniem lepiej dodać opcję "Wybierz kategorię" zamiast wybranej domyślnie kategorii "Mieszkanie", gdyż w ten sposób użytkownik łatwiej się zorientuje o co tutaj chodzi -->
                                 <option value="food">Jedzenie</option>
-                                <option value="home" selected>Mieszkanie</option>
+                                <option value="home">Mieszkanie</option>
                                 <option value="transport">Transport</option>
                                 <option value="telecommunication">Telekomunikacja</option>
                                 <option value="healthcare">Opieka zdrowotna</option>
