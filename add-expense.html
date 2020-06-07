@@ -15,7 +15,7 @@
     <header class="text-white text-center bg-dark py-2">
         <div class="header-content py-2">
             <h1 class="display-4">Menedżer budżetu osobistego</h1>
-            <h2>Dodaj przychód</h2>
+            <h2>Dodaj wydatek</h2>
         </div>
     </header>
 
@@ -32,12 +32,12 @@
                         <li class="nav-item m-auto">
                             <a class="nav-link" href="main.html">Menu główne</a>
                         </li>
-                        <li class="nav-item active ml-lg-5 m-auto">
-                            <a class="nav-link" href="add-income.html">Dodaj przychód <span class="sr-only">(aktualna
-                                    opcja)</span></a>
-                        </li>
                         <li class="nav-item ml-lg-5 m-auto">
-                            <a class=" nav-link" href="add-expense.html">Dodaj wydatek</a>
+                            <a class="nav-link" href="add-income.html">Dodaj przychód</a>
+                        </li>
+                        <li class="nav-item active ml-lg-5 m-auto">
+                            <a class=" nav-link" href="add-expense.html">Dodaj wydatek <span class="sr-only">(aktualna
+                                    opcja)</span></a>
                         </li>
                         <li class="nav-item ml-lg-5 m-auto">
                             <a class=" nav-link" href="#">Przeglądaj bilans</a>
@@ -59,6 +59,18 @@
                     <form action="">
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
+                                <div class="input-group-text pr-2"><i class="far fa-credit-card"></i></div>
+                            </div>
+                            <label class="sr-only" for="payment">Sposób płatności</label>
+                            <select name="payment" id="payment" class="form-control">
+                                <option selected disabled>Wybierz sposób płatności</option>
+                                <option value="cash">Gotówka</option>
+                                <option value="debit-card">Karta debetowa</option>
+                                <option value="credit-card">Karta kredytowa</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
                                 <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
                             </div>
                             <label class="sr-only" for="amount">Kwota</label>
@@ -72,10 +84,24 @@
                             <label class="sr-only" for="category">Kategoria</label>
                             <select name="category" id="category" class="form-control" required>
                                 <option selected disabled>Wybierz kategorię</option>
-                                <option value="1">Wynagrodzenie</option>
-                                <option value="2">Odsetki</option>
-                                <option value="3">Sprzedaż na allegro</option>
-                                <option value="4">Inne</option>
+                                <!-- Moim zdaniem lepiej dodać opcję "Wybierz kategorię" zamiast wybranej domyślnie kategorii "Mieszkanie", gdyż w ten sposób użytkownik łatwiej się zorientuje o co tutaj chodzi -->
+                                <option value="food">Jedzenie</option>
+                                <option value="home">Mieszkanie</option>
+                                <option value="transport">Transport</option>
+                                <option value="telecommunication">Telekomunikacja</option>
+                                <option value="healthcare">Opieka zdrowotna</option>
+                                <option value="clothes">Ubranie</option>
+                                <option value="hygiene">Higiena</option>
+                                <option value="children">Dzieci</option>
+                                <option value="entertainment">Rozrywka</option>
+                                <option value="trip">Wycieczka</option>
+                                <option value="courses">Szkolenia</option>
+                                <option value="books">Książki</option>
+                                <option value="savings">Oszczędności</option>
+                                <option value="pension">Na złotą jesień, czyli emeryturę</option>
+                                <option value="debts-repayment">Spłata długów</option>
+                                <option value="donation">Darowizna</option>
+                                <option value="other-expenses">Inne wydatki</option>
                             </select>
                         </div>
                         <div class="input-group mb-2">
@@ -90,8 +116,8 @@
             </div>
         </section>
         <!-- Modal -->
-        <div class="modal fade" id="addIncomeConfirmation" tabindex="-1" role="dialog"
-            aria-labelledby="addIncomeConfirmationLabel" aria-hidden="true">
+        <div class="modal fade" id="addExpenseConfirmation" tabindex="-1" role="dialog"
+            aria-labelledby="addExpenseConfirmationLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -101,7 +127,7 @@
                         </a>
                     </div>
                     <div class="modal-body">
-                        <h3 class="text-center">Przychód został dodany</h3>
+                        <h3 class="text-center">Wydatek został dodany</h3>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <a href="main.html" class="btn btn-primary">OK <i class="far fa-smile"></i></a>
@@ -122,7 +148,7 @@
         crossorigin="anonymous"></script>
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
 
-    <!-- Skrypt do wyświetlania modalu po dodaniu przychodu -->
+    <!-- Skrypt do wyświetlania modalu po dodaniu wydatku -->
     <script src="show-modal.js"></script>
 </body>
 
