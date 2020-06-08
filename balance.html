@@ -19,53 +19,51 @@
         </div>
     </header>
 
-    <main>
-        <section class="main-menu">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="main.html"><i class="fas fa-piggy-bank"></i></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Rozwiń menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav m-auto">
-                        <li class="nav-item m-auto">
-                            <a class="nav-link" href="main.html">Menu główne</a>
-                        </li>
-                        <li class="nav-item ml-lg-5 m-auto">
-                            <a class="nav-link" href="add-income.html">Dodaj przychód</a>
-                        </li>
-                        <li class="nav-item ml-lg-5 m-auto">
-                            <a class=" nav-link" href="add-expense.html">Dodaj wydatek</a>
-                        </li>
-                        <li class="nav-item active ml-lg-5 m-auto">
-                            <a class=" nav-link" href="balance.html">Przeglądaj bilans <span class="sr-only">(aktualna
-                                    opcja)</span></a>
-                        </li>
-                        <li class="nav-item ml-lg-5 m-auto">
-                            <a class="nav-link" href="#">Ustawienia</a>
-                        </li>
-                        <li class="nav-item ml-lg-5 m-auto">
-                            <a class=" nav-link" href="index.html">Wyloguj się</a>
-                        </li>
-                        <li class="nav-item dropdown ml-lg-5 m-auto">
-                            <a class="nav-link dropdown-toggle dropdown-heading" href="#" id="navbarDropdown"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Wybierz okres
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" id="current-month" href="#">Bieżący miesiąc</a>
-                                <a class="dropdown-item" id="previous-month" href="#">Poprzedni miesiąc</a>
-                                <a class="dropdown-item" id="current-year" href="#">Bieżący rok</a>
-                                <a class="dropdown-item" id="custom-date" href="#">Niestandardowy</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </section>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="main.html"><i class="fas fa-piggy-bank"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Rozwiń menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav m-auto">
+                <li class="nav-item m-auto">
+                    <a class="nav-link" href="main.html">Menu główne</a>
+                </li>
+                <li class="nav-item ml-lg-5 m-auto">
+                    <a class="nav-link" href="add-income.html">Dodaj przychód</a>
+                </li>
+                <li class="nav-item ml-lg-5 m-auto">
+                    <a class=" nav-link" href="add-expense.html">Dodaj wydatek</a>
+                </li>
+                <li class="nav-item active ml-lg-5 m-auto">
+                    <a class=" nav-link" href="balance.html">Przeglądaj bilans <span class="sr-only">(aktualna
+                            opcja)</span></a>
+                </li>
+                <li class="nav-item ml-lg-5 m-auto">
+                    <a class="nav-link" href="#">Ustawienia</a>
+                </li>
+                <li class="nav-item ml-lg-5 m-auto">
+                    <a class=" nav-link" href="index.html">Wyloguj się</a>
+                </li>
+                <li class="nav-item dropdown ml-lg-5 m-auto">
+                    <a class="nav-link dropdown-toggle dropdown-heading" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Wybierz okres
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="current-month" href="#">Bieżący miesiąc</a>
+                        <a class="dropdown-item" id="previous-month" href="#">Poprzedni miesiąc</a>
+                        <a class="dropdown-item" id="current-year" href="#">Bieżący rok</a>
+                        <a class="dropdown-item" id="custom-date" href="#">Niestandardowy</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-        <div class="container border rounded bg-white mt-2 py-4">
+    <main>
+        <div class="container border rounded bg-white mt-2 pt-3 pb-0">
             <section class="balance">
                 <div class="row justify-content-between">
                     <div class="col">
@@ -217,7 +215,7 @@
             </section>
 
             <section class="charts">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div id="piechart-incomes"></div>
                     </div>
@@ -227,7 +225,7 @@
                 </div>
             </section>
 
-            <section class="difference">
+            <section class="difference py-3">
                 <table class="table table-bordered">
                     <tr>
                         <th scope="col" width="712px">Różnica</th>
@@ -238,7 +236,7 @@
                     <div class="onPlus">
                         <h4><span class="text-success">Gratulacje. </span>Świetnie zarządzasz finansami!</h4>
                     </div>
-                    <div class="onMinus">
+                    <div class="onMinus d-none">
                         <h4><span class="text-danger">Uważaj! </span>Wpadasz w długi :(</h4>
                     </div>
                 </div>
@@ -246,7 +244,7 @@
         </div>
     </main>
 
-    <footer class="main-footer bg-dark pt-2">
+    <footer class="main-footer bg-dark pt-1">
         <h6 class="text-white text-center">Copyright &copy; 2020 Michael Slabikovsky</h6>
     </footer>
 

@@ -66,7 +66,7 @@ const drawChartOfIncomes = () => {
     ["Inne", 1000],
   ]);
 
-  let options = { title: "Przychody", width: 550, height: 300 };
+  let options = { title: "Przychody", width: 450, height: 300 };
 
   let chart = new google.visualization.PieChart(
     document.getElementById("piechart-incomes")
@@ -96,7 +96,7 @@ const drawChartOfExpenses = () => {
     ["Inne wydatki", 200],
   ]);
 
-  let options = { title: "Wydatki", width: 550, height: 300 };
+  let options = { title: "Wydatki", width: 450, height: 300 };
 
   let chart = new google.visualization.PieChart(
     document.getElementById("piechart-expenses")
