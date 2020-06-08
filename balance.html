@@ -65,16 +65,16 @@
             </nav>
         </section>
 
-        <div class="container border rounded bg-white mt-2 py-3">
+        <div class="container border rounded bg-white mt-2 py-4">
             <section class="balance">
                 <div class="row justify-content-between">
                     <div class="col">
                         <h3 class="text-center">Przychody</h3>
                         <table class="table table-bordered">
-                            <thead class="thead-dark">
+                            <thead class="bg-success text-white">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Kategoria</th>
+                                    <th scope="col" width="476px">Kategoria</th>
                                     <th scope="col">Łączna kwota</th>
                                 </tr>
                             </thead>
@@ -108,15 +108,15 @@
                         </table>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col">
                         <h3 class="text-center">Wydatki</h3>
                         <table class="table table-bordered">
-                            <thead class="thead-dark">
+                            <thead class="bg-warning text-white">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Kategoria</th>
-                                    <th scope="col">Kwota</th>
+                                    <th scope="col" width="476px">Kategoria</th>
+                                    <th scope="col">Łączna kwota</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -207,7 +207,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Razem</th>
-                                    <td>-</td>
+                                    <td class="text-center">-</td>
                                     <th id="expenses">3280</th>
                                 </tr>
                             </tbody>
@@ -217,18 +217,24 @@
             </section>
 
             <section class="charts">
-                <div id="piechart-incomes"></div>
-                <div id="piechart-expenses"></div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div id="piechart-incomes"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="piechart-expenses"></div>
+                    </div>
+                </div>
             </section>
 
             <section class="difference">
                 <table class="table table-bordered">
                     <tr>
-                        <th scope="col">Różnica</th>
+                        <th scope="col" width="712px">Różnica</th>
                         <td id="difference"></td>
                     </tr>
                 </table>
-                <div class="feedback">
+                <div class="feedback text-center">
                     <div class="onPlus">
                         <h4><span class="text-success">Gratulacje. </span>Świetnie zarządzasz finansami!</h4>
                     </div>
