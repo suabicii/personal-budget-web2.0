@@ -1,18 +1,18 @@
 let dropdownHeadingBtn = document.querySelector(".dropdown-heading");
 let dropdownOptions = document.querySelectorAll(".dropdown-item");
-// let difference = document.getElementById("difference");
-// let positiveFeedback = document.querySelector(".onPlus");
-// let negativeFeedback = document.querySelector(".onMinus");
+let difference = document.getElementById("difference");
+let positiveFeedback = document.querySelector(".onPlus");
+let negativeFeedback = document.querySelector(".onMinus");
 let period = document.querySelector(".period");
 let sumOfIncomes = document.getElementById("incomes");
 let sumOfExpenses = document.getElementById("expenses");
-/* let modal = document.getElementById("modal");
-let closeModalBtn = document.querySelector(".close");
-let customDateForm = document.querySelector("form"); */
+// let modal = document.getElementById("modal");
+// let closeModalBtn = document.querySelector(".close");
+// let customDateForm = document.querySelector("form");
 
-// difference.textContent = sumOfIncomes.textContent - sumOfExpenses.textContent;
+difference.textContent = sumOfIncomes.textContent - sumOfExpenses.textContent;
 
-/* const getFeedback = () => {
+const getFeedback = () => {
   if (difference.textContent > "0") {
     positiveFeedback.style.display = "inline";
     negativeFeedback.style.display = "none";
@@ -20,7 +20,7 @@ let customDateForm = document.querySelector("form"); */
     positiveFeedback.style.display = "none";
     negativeFeedback.style.display = "inline";
   }
-}; */
+};
 
 const choosePeriod = () => {
   dropdownOptions.forEach((option) => {
@@ -43,19 +43,19 @@ const choosePeriod = () => {
 
 // Modal
 
-/* closeModalBtn.addEventListener("click", () => (modal.style.display = "none"));
-customDateForm.addEventListener("submit", (evt) => {
+// closeModalBtn.addEventListener("click", () => (modal.style.display = "none"));
+/* customDateForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   modal.style.display = "none";
 }); */
 
-// getFeedback();
+getFeedback();
 choosePeriod();
 
 // Wykresy kołowe
 
 // Load google charts
-/* google.charts.load("current", { packages: ["corechart"] });
+google.charts.load("current", { packages: ["corechart"] });
 
 const drawChartOfIncomes = () => {
   let data = google.visualization.arrayToDataTable([
@@ -105,4 +105,4 @@ const drawChartOfExpenses = () => {
 };
 
 google.charts.setOnLoadCallback(drawChartOfIncomes);
-google.charts.setOnLoadCallback(drawChartOfExpenses); */
+google.charts.setOnLoadCallback(drawChartOfExpenses);
