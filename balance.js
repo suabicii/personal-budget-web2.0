@@ -13,12 +13,16 @@ let sumOfExpenses = document.getElementById("expenses");
 difference.textContent = sumOfIncomes.textContent - sumOfExpenses.textContent;
 
 const getFeedback = () => {
-  if (difference.textContent > "0") {
+  if (difference.textContent > 0) {
     positiveFeedback.style.display = "inline";
     negativeFeedback.style.display = "none";
+    difference.classList.add("bg-success");
+    difference.classList.remove("bg-danger");
   } else {
     positiveFeedback.style.display = "none";
     negativeFeedback.style.display = "inline";
+    difference.classList.add("bg-danger");
+    difference.classList.remove("bg-success");
   }
 };
 
@@ -57,6 +61,16 @@ choosePeriod();
 // Load google charts
 google.charts.load("current", { packages: ["corechart"] });
 
+let chartWidth;
+
+if (window.innerWidth <= 1200) {
+  chartWidth = 450;
+} else if (window.innerWidth <= 768) {
+  chartWidth = 350;
+} else {
+  chartWidth = 550;
+}
+
 const drawChartOfIncomes = () => {
   let data = google.visualization.arrayToDataTable([
     ["Kategoria", "Kwota"],
@@ -66,7 +80,7 @@ const drawChartOfIncomes = () => {
     ["Inne", 1000],
   ]);
 
-  let options = { title: "Przychody", width: 450, height: 300 };
+  let options = { title: "Przychody", width: chartWidth, height: 400 };
 
   let chart = new google.visualization.PieChart(
     document.getElementById("piechart-incomes")
@@ -96,7 +110,7 @@ const drawChartOfExpenses = () => {
     ["Inne wydatki", 200],
   ]);
 
-  let options = { title: "Wydatki", width: 450, height: 300 };
+  let options = { title: "Wydatki", width: chartWidth, height: 400 };
 
   let chart = new google.visualization.PieChart(
     document.getElementById("piechart-expenses")
