@@ -46,7 +46,7 @@
                 <li class="nav-item ml-lg-5 m-auto">
                     <a class=" nav-link" href="index.html">Wyloguj się</a>
                 </li>
-                <li class="nav-item dropdown ml-lg-5 m-auto">
+                <li class="nav-item dropdown active ml-lg-5 m-auto">
                     <a class="nav-link dropdown-toggle dropdown-heading" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Wybierz okres
@@ -55,7 +55,8 @@
                         <a class="dropdown-item" id="current-month" href="#">Bieżący miesiąc</a>
                         <a class="dropdown-item" id="previous-month" href="#">Poprzedni miesiąc</a>
                         <a class="dropdown-item" id="current-year" href="#">Bieżący rok</a>
-                        <a class="dropdown-item" id="custom-date" href="#">Niestandardowy</a>
+                        <button class="dropdown-item" id="custom-date" data-toggle="modal"
+                            data-target="#customDateModal">Niestandardowy</button>
                     </div>
                 </li>
             </ul>
@@ -241,6 +242,41 @@
                     </div>
                 </div>
             </section>
+        </div>
+        <!-- Modal do wyboru niestandardowego okresu -->
+        <div class="modal fade" id="customDateModal" tabindex="-1" role="dialog" aria-labelledby="customDateModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customDateModalLabel">Podaj daty początku i końca okresu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="">
+                        <div class="modal-body">
+                            <div class="input-group mr-2 mb-2">
+                                <label for="start-date" class="mr-2">Od</label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                </div>
+                                <input type="date" name="start-date" id="start-date" class="form-control" required>
+                            </div>
+                            <div class="input-group mr-2 mb-2">
+                                <label for="end-date" class="mr-2">Do </label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                </div>
+                                <input type="date" name="end-date" id="end-date" class="form-control" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                <button type="submit" class="btn btn-some">Wybierz</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </main>
 
