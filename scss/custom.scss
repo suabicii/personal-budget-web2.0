@@ -4,7 +4,7 @@
 }
 
 body {
-  background: url("../img/background.jpg") center;
+  background: url("../img/background.jpg") no-repeat fixed center;
   min-height: 100%;
   position: relative;
 }
@@ -36,10 +36,24 @@ header {
   }
 }
 
+footer {
+  width: 100%;
+}
+
 .main-footer {
   position: absolute;
+  left: 0;
   bottom: 0;
-  width: 100%;
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+  nav {
+    max-height: 56px;
+
+    .nav-link {
+      font-size: 0.8rem;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -47,6 +61,10 @@ header {
     .header-content {
       h1 {
         font-size: 2.125rem;
+      }
+
+      h2 {
+        font-size: 1.625rem;
       }
     }
   }
