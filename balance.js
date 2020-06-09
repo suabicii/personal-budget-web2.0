@@ -63,12 +63,12 @@ google.charts.load("current", { packages: ["corechart"] });
 
 let chartWidth;
 
-if (window.innerWidth <= 1200) {
-  chartWidth = 450;
-} else if (window.innerWidth <= 768) {
-  chartWidth = 350;
-} else {
+if (window.innerWidth > 1200) {
   chartWidth = 550;
+} else if (window.innerWidth >= 768 && window.innerWidth <= 1200) {
+  chartWidth = 400;
+} else if (window.innerWidth < 768) {
+  chartWidth = 350;
 }
 
 const drawChartOfIncomes = () => {
