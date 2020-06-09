@@ -62,7 +62,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="">
+                    <form action="" id="register">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -109,9 +109,12 @@
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
                                 <label class="sr-only" for="passwordConfirmation">Potwierdź hasło</label>
-                                <input type="passwordConfirmation" name="passwordConfirmation" id="passwordConfirmation"
+                                <input type="password" name="passwordConfirmation" id="passwordConfirmation"
                                     class="form-control" placeholder="Powtórz hasło" required>
                             </div>
+                            <small id="passwordHelp" class="text-danger d-none">
+                                Hasła w obu polach muszą być takie same
+                            </small>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
@@ -133,7 +136,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="">
+                    <form action="" id="login">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -148,15 +151,56 @@
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
                                 <label class="sr-only" for="authorization">Hasło</label>
-                                <input type="authorization" name="authorization" id="authorization" class="form-control"
+                                <input type="password" name="authorization" id="authorization" class="form-control"
                                     placeholder="Hasło" required>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                            <a href="main.html" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></a>
+                            <button type="submit" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></a>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal po rejestracji -->
+        <div class="modal fade" id="registerConfirmation" tabindex="-1" role="dialog"
+            aria-labelledby="registerConfirmationLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success" id="registerConfirmationLabel">Sukces</h5>
+                        <a href="main.html" class="close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="text-center">Rejestracja zakończona sukcesem</h3>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK <i
+                                class="far fa-smile"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal po logowaniu -->
+        <div class="modal fade" id="loginConfirmation" tabindex="-1" role="dialog"
+            aria-labelledby="loginConfirmationLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success" id="loginConfirmationLabel">Sukces</h5>
+                        <a href="main.html" class="close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="text-center">Logowanie zakończone sukcesem</h3>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <a href="main.html" class="btn btn-primary">OK <i class="far fa-smile"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,6 +221,10 @@
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
+
+    <!-- Skrypty do logowania i rejestracji -->
+    <script src="user-menu.js"></script>
+    <script src="show-modal.js"></script>
 </body>
 
 </html>
