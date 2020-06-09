@@ -6,9 +6,6 @@ let negativeFeedback = document.querySelector(".onMinus");
 let period = document.querySelector(".period");
 let sumOfIncomes = document.getElementById("incomes");
 let sumOfExpenses = document.getElementById("expenses");
-// let modal = document.getElementById("modal");
-// let closeModalBtn = document.querySelector(".close");
-// let customDateForm = document.querySelector("form");
 
 difference.textContent = sumOfIncomes.textContent - sumOfExpenses.textContent;
 
@@ -39,7 +36,6 @@ const choosePeriod = () => {
         period.textContent = "z bieżącego roku";
       else {
         period.textContent = "z wybranego okresu";
-        modal.style.display = "block";
       }
     });
   });
