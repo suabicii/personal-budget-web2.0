@@ -24,6 +24,9 @@ header {
     left: 50%;
     transform: translateX(-50%); }
 
+.middle-col {
+  width: 476px; }
+
 footer {
   width: 100%; }
 
