@@ -1,10 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['logged_id'])) {
-    header('Location: index.php');
-    exit();
-}
+require_once "redirect.php";
 
 ?>
 <!DOCTYPE html>

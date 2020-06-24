@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+
+require_once "redirect.php";
+
+?>
 <!DOCTYPE html>
 <html lang="pl">
 
