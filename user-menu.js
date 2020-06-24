@@ -3,7 +3,8 @@ $("#register").submit(function () {
   $("#registerConfirmation").modal("show");
 });
 
-$("#login").submit(function () {
+/* $("#login").submit(function () {
   $("#loginModal").modal("hide");
   $("#loginConfirmation").modal("show");
 });
+ */

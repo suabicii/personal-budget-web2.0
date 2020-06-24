@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (isset($_SESSION['logged_id'])) {
+    header('Location: main.php');
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -104,13 +110,9 @@ session_start();
                                 <label class="sr-only" for="passwordConfirmation">Potwierdź hasło</label>
                                 <input type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control" placeholder="Powtórz hasło" required>
                             </div>
-                            <small id="passwordHelp" class="text-danger d-none">
-                                Hasła w obu polach muszą być takie same
-                            </small>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                            <button type="submit" class="btn btn-primary">Załóż konto <i class="fas fa-user-plus"></i></button>
                         </div>
                     </form>
                 </div>
@@ -126,7 +128,7 @@ session_start();
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="" id="login">
+                    <form id="login" method="post" action="login.php">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -145,7 +147,7 @@ session_start();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                            <button type="submit" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></a>
+                            <button type="submit" class="btn btn-success">Zaloguj się <i class="fas fa-key"></i></button>
                         </div>
                     </form>
                 </div>
@@ -171,7 +173,7 @@ session_start();
             </div>
         </div>
         <!-- Modal po logowaniu -->
-        <div class="modal fade" id="loginConfirmation" tabindex="-1" role="dialog" aria-labelledby="loginConfirmationLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="loginConfirmation" tabindex="-1" role="dialog" aria-labelledby="loginConfirmationLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -188,7 +190,7 @@ session_start();
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </main>
 
     <footer class="main-footer">

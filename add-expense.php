@@ -42,7 +42,7 @@
                     <a class=" nav-link" href="#">Ustawienia</a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
-                    <a class=" nav-link" href="index.php">Wyloguj się</a>
+                    <a class=" nav-link" href="logout.php">Wyloguj się</a>
                 </li>
             </ul>
         </div>
