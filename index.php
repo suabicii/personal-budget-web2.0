@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -173,7 +176,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-success" id="loginConfirmationLabel">Sukces</h5>
-                        <a href="main.html" class="close">
+                        <a href="main.php" class="close">
                             <span aria-hidden="true">&times;</span>
                         </a>
                     </div>
