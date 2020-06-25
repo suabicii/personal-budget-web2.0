@@ -144,6 +144,14 @@ if (isset($_SESSION['logged_id'])) {
                                 <label class="sr-only" for="authorization">Hasło</label>
                                 <input type="password" name="authorization" id="authorization" class="form-control" placeholder="Hasło" required>
                             </div>
+                            <div>
+                                <?php
+                                if (isset($_SESSION['bad_attempt'])) {
+                                    echo '<p class="text-danger">Niepoprawny login lub hasło</p>';
+                                    unset($_SESSION['bad_attempt']);
+                                }
+                                ?>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
