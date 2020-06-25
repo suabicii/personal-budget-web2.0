@@ -68,21 +68,21 @@ if (isset($_SESSION['logged_id'])) {
                     </div>
                     <form action="register.php" id="register" method="post">
                         <div class="modal-body">
-                            <div class="input-group mr-2 mb-2">
+                            <div class="input-group mr-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                 </div>
                                 <label class="sr-only" for="name">Imię</label>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Imię" required>
                             </div>
-                            <div class="input-group mr-2 mb-2">
+                            <div class="input-group mr-2 mt-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                 </div>
                                 <label class="sr-only" for="surname">Nazwisko</label>
                                 <input type="text" name="surname" id="surname" class="form-control" placeholder="Nazwisko" required>
                             </div>
-                            <div class="input-group mr-2 mb-2">
+                            <div class="input-group mr-2 mt-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-at"></i></div>
                                 </div>
@@ -97,7 +97,7 @@ if (isset($_SESSION['logged_id'])) {
                             }
 
                             ?>
-                            <div class="input-group mr-2 mb-2">
+                            <div class="input-group mr-2 mt-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text pr-2"><i class="fas fa-user-shield"></i></div>
                                 </div>
@@ -112,14 +112,14 @@ if (isset($_SESSION['logged_id'])) {
                             }
 
                             ?>
-                            <div class="input-group mr-2 mb-2">
+                            <div class="input-group mr-2 mt-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
                                 <label class="sr-only" for="password">Hasło</label>
                                 <input type="password" name="password" id="password" class="form-control" placeholder="Hasło" required>
                             </div>
-                            <div class="input-group mr-2 mb-2">
+                            <div class="input-group mr-2 mt-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
