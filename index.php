@@ -66,7 +66,7 @@ if (isset($_SESSION['logged_id'])) {
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="" id="register">
+                    <form action="register.php" id="register" method="post">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
@@ -89,6 +89,14 @@ if (isset($_SESSION['logged_id'])) {
                                 <label class="sr-only" for="email">E-mail</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="E-mail" required>
                             </div>
+                            <?php
+
+                            if (isset($_SESSION['email_err'])) {
+                                echo $_SESSION['email_err'];
+                                unset($_SESSION['email_err']);
+                            }
+
+                            ?>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text pr-2"><i class="fas fa-user-shield"></i></div>
@@ -96,6 +104,14 @@ if (isset($_SESSION['logged_id'])) {
                                 <label class="sr-only" for="username">Login</label>
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Login" required>
                             </div>
+                            <?php
+
+                            if (isset($_SESSION['login_err'])) {
+                                echo $_SESSION['login_err'];
+                                unset($_SESSION['login_err']);
+                            }
+
+                            ?>
                             <div class="input-group mr-2 mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-key"></i></div>
@@ -113,6 +129,7 @@ if (isset($_SESSION['logged_id'])) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-primary">Załóż konto <i class="fas fa-user-plus"></i></button>
                         </div>
                     </form>
                 </div>
@@ -198,7 +215,7 @@ if (isset($_SESSION['logged_id'])) {
     <script src=<?= isset($_SESSION['bad_attempt']) ? "login-error.js" : "" ?>></script>
 
     <!-- Skrypty do logowania i rejestracji -->
-    <script src="user-menu.js"></script>
+    <!-- <script src="user-menu.js"></script> -->
     <script src="show-modal.js"></script>
 </body>
 
