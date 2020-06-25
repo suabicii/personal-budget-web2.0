@@ -40,4 +40,16 @@ if ($_POST['password'] != $_POST['passwordConfirmation']) {
     $_SESSION['success'] = false;
 }
 
+if ($_SESSION['success']) {
+    $query = $db->prepare('INSERT INTO users values (NULL, :name, :surname, :email_posted, :login_posted, :password)');
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $query->execute([
+        ":name" => $_POST['name'],
+        ":surname" => $_POST['surname'],
+        ":email_posted" => $email,
+        ":login_posted" => $login,
+        ":password" => $password
+    ]);
+}
+
 header('Location: index.php');
