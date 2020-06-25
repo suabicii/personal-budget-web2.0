@@ -50,6 +50,8 @@ if ($_SESSION['success']) {
         ":login_posted" => $login,
         ":password" => $password
     ]);
+    unset($_SESSION['success']);
+    $_SESSION['register_completed'] = true;
 }
 
 header('Location: index.php');

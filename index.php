@@ -224,6 +224,20 @@ if (isset($_SESSION['logged_id'])) {
     <!-- Jeśli rejestracja się nie powiedzie -->
     <script src=<?= !$_SESSION['success'] ? "register-error.js" : "" ?>></script>
 
+    <?php
+
+    if (isset($_SESSION['register_completed'])) {
+        echo <<<END
+        <script>
+            $("#registerConfirmation").modal("show");
+        </script>
+
+END;
+        unset($_SESSION['register_completed']);
+    }
+
+    ?>
+
     <!-- Skrypty do logowania i rejestracji -->
     <!-- <script src="user-menu.js"></script> -->
     <script src="show-modal.js"></script>
