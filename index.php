@@ -172,25 +172,6 @@ if (isset($_SESSION['logged_id'])) {
                 </div>
             </div>
         </div>
-        <!-- Modal po logowaniu -->
-        <!-- <div class="modal fade" id="loginConfirmation" tabindex="-1" role="dialog" aria-labelledby="loginConfirmationLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-success" id="loginConfirmationLabel">Sukces</h5>
-                        <a href="main.php" class="close">
-                            <span aria-hidden="true">&times;</span>
-                        </a>
-                    </div>
-                    <div class="modal-body">
-                        <h3 class="text-center">Logowanie zakończone sukcesem</h3>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <a href="main.php" class="btn btn-primary">OK <i class="far fa-smile"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </main>
 
     <footer class="main-footer">
