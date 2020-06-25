@@ -148,7 +148,6 @@ if (isset($_SESSION['logged_id'])) {
                                 <?php
                                 if (isset($_SESSION['bad_attempt'])) {
                                     echo '<p class="text-danger">Niepoprawny login lub hasło</p>';
-                                    unset($_SESSION['bad_attempt']);
                                 }
                                 ?>
                             </div>
@@ -195,6 +194,8 @@ if (isset($_SESSION['logged_id'])) {
     <script src="jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
+    <!-- Jeśli logowanie się nie powiedzie -->
+    <script src=<?= isset($_SESSION['bad_attempt']) ? "login-error.js" : "" ?>></script>
 
     <!-- Skrypty do logowania i rejestracji -->
     <script src="user-menu.js"></script>
