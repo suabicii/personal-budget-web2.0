@@ -126,6 +126,14 @@ if (isset($_SESSION['logged_id'])) {
                                 <label class="sr-only" for="passwordConfirmation">Potwierdź hasło</label>
                                 <input type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control" placeholder="Powtórz hasło" required>
                             </div>
+                            <?php
+
+                            if (isset($_SESSION['pswd_err'])) {
+                                echo $_SESSION['pswd_err'];
+                                unset($_SESSION['pswd_err']);
+                            }
+
+                            ?>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
@@ -213,6 +221,8 @@ if (isset($_SESSION['logged_id'])) {
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
     <!-- Jeśli logowanie się nie powiedzie -->
     <script src=<?= isset($_SESSION['bad_attempt']) ? "login-error.js" : "" ?>></script>
+    <!-- Jeśli rejestracja się nie powiedzie -->
+    <script src=<?= !$_SESSION['success'] ? "register-error.js" : "" ?>></script>
 
     <!-- Skrypty do logowania i rejestracji -->
     <!-- <script src="user-menu.js"></script> -->
