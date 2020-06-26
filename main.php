@@ -1,6 +1,15 @@
 <?php
 
 require_once "redirect.php";
+require_once "database.php";
+
+$query = $db->prepare('SELECT name FROM users WHERE id = :id');
+$query->bindValue(':id', $_SESSION['logged_id'], PDO::PARAM_STR);
+$query->execute();
+
+$user = $query->fetch();
+
+$_SESSION['logged_name'] = $user['name'];
 
 ?>
 <!DOCTYPE html>
@@ -54,7 +63,14 @@ require_once "redirect.php";
     </nav>
 
     <main>
-
+        <section class="welcome">
+            <div class="container container-sm border rounded bg-white text-center mt-2 py-2">
+                <h3>Witaj, <?= $_SESSION['logged_name'] ?>! <i class="far fa-smile"></i></h3>
+                <p class="lead">Co chcesz teraz zrobić?
+            </div>/p>
+            <img class="img-fluid" src="./img/question.jpg" alt="znak zapytania">
+            </div>
+        </section>
     </main>
 
     <footer class="main-footer">
