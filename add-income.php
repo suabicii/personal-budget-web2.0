@@ -38,7 +38,7 @@ require_once "redirect.php";
                             opcja)</span></a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
-                    <a class=" nav-link" href="add-expense.php">Dodaj wydatek<i class="fas fa-wallet"></i></a>
+                    <a class=" nav-link" href="add-expense.php">Dodaj wydatek <i class="fas fa-wallet"></i></a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
                     <a class=" nav-link" href="balance.php">Przeglądaj bilans <i class="fas fa-chart-line"></i></a>
