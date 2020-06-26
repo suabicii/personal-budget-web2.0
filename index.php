@@ -56,7 +56,7 @@ if (isset($_SESSION['logged_id'])) {
                 </div>
             </div>
         </section>
-        <!-- Modal -->
+        <!-- Modal do rejestracji -->
         <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -143,7 +143,7 @@ if (isset($_SESSION['logged_id'])) {
                 </div>
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Modal do logowania -->
         <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -219,13 +219,25 @@ if (isset($_SESSION['logged_id'])) {
     <script src="jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
-    <!-- Jeśli logowanie się nie powiedzie -->
-    <script src=<?= isset($_SESSION['bad_attempt']) ? "login-error.js" : "" ?>></script>
-    <!-- Jeśli rejestracja się nie powiedzie -->
-    <script src=<?= !$_SESSION['success'] ? "register-error.js" : "" ?>></script>
+    <!-- Jeśli logowanie się nie powiedzie, nie zamykaj od razu formularza logowania -->
+    <script src=<?php
+                if (isset($_SESSION['bad_attempt'])) {
+                    echo "login-error.js";
+                    unset($_SESSION['bad_attempt']);
+                } else echo "";
+                ?>>
+    </script>
+    <!-- Jeśli rejestracja się nie powiedzie, nie zamykaj od razu formularza rejestracji -->
+    <script src=<?php
+                if (isset($_SESSION['success']) && !$_SESSION['success']) {
+                    echo "register-error.js";
+                    unset($_SESSION['success']);
+                } else echo "";
+                ?>>
+    </script>
 
     <?php
-
+    // Wyświetl modal potwierdzający udaną rejestrację
     if (isset($_SESSION['register_completed'])) {
         echo <<<END
         <script>
