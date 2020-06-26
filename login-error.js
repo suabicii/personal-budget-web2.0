@@ -1,0 +1,3 @@
+$(function () {
+  $("#loginModal").modal("show");
+});
