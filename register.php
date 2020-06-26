@@ -6,11 +6,16 @@ require_once "database.php";
 
 $_SESSION['success'] = true;
 
-$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$email = $_POST['email'];
 $login = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
 
 $errorStart = '<small class="text-danger">';
 $errorEnd = '</small>';
+
+if (!filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
+    $_SESSION['email_err'] = $errorStart . 'Podaj poprawny adres e-mail!' . $errorEnd;
+    $_SESSION['success'] = false;
+}
 
 $query = $db->prepare('SELECT email FROM users WHERE email = :email');
 $query->bindValue(':email', $email, PDO::PARAM_STR);
@@ -23,6 +28,11 @@ if ($query->rowCount() > 0) {
 
 if (strlen($login) < 4 || strlen($login) > 20) {
     $_SESSION['login_err'] = $errorStart . 'Login musi posiadać od 4 do 20 znaków!' . $errorEnd;
+    $_SESSION['success'] = false;
+}
+
+if (!ctype_alnum($login)) {
+    $_SESSION['login_err'] = $errorStart . 'Login może składać się tylko z liter i cyfr (bez polskich znaków)!' . $errorEnd;
     $_SESSION['success'] = false;
 }
 
