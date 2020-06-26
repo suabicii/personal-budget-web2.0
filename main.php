@@ -64,11 +64,10 @@ $_SESSION['logged_name'] = $user['name'];
 
     <main>
         <section class="welcome">
-            <div class="container container-sm border rounded bg-white text-center mt-2 py-2">
+            <div class="container-custom border rounded bg-white text-center mt-2 py-2">
                 <h3>Witaj, <?= $_SESSION['logged_name'] ?>! <i class="far fa-smile"></i></h3>
-                <p class="lead">Co chcesz teraz zrobić?
-            </div>/p>
-            <img class="img-fluid" src="./img/question.jpg" alt="znak zapytania">
+                <p class="text-muted lead">Co zamierzasz teraz zrobić? <i class="far fa-lightbulb"></i></p>
+                <img class="img-fluid" src="./img/question.jpg" alt="znak zapytania">
             </div>
         </section>
     </main>
