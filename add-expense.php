@@ -31,23 +31,23 @@ require_once "redirect.php";
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav m-auto">
                 <li class="nav-item m-auto">
-                    <a class="nav-link" href="main.php">Menu główne</a>
+                    <a class="nav-link" href="main.php">Menu główne <i class="fas fa-home"></i></a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
-                    <a class="nav-link" href="add-income.php">Dodaj przychód</a>
+                    <a class="nav-link" href="add-income.php">Dodaj przychód <i class="fas fa-hand-holding-usd"></i></a>
                 </li>
                 <li class="nav-item active ml-lg-5 m-auto">
-                    <a class=" nav-link" href="add-expense.php">Dodaj wydatek <span class="sr-only">(aktualna
+                    <a class=" nav-link" href="add-expense.php">Dodaj wydatek <i class="fas fa-wallet"></i><span class="sr-only">(aktualna
                             opcja)</span></a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
-                    <a class=" nav-link" href="balance.php">Przeglądaj bilans</a>
+                    <a class=" nav-link" href="balance.php">Przeglądaj bilans <i class="fas fa-chart-line"></i></a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
-                    <a class=" nav-link" href="#">Ustawienia</a>
+                    <a class=" nav-link" href="#">Ustawienia <i class="fas fa-cog"></i></a>
                 </li>
                 <li class="nav-item ml-lg-5 m-auto">
-                    <a class=" nav-link" href="logout.php">Wyloguj się</a>
+                    <a class=" nav-link" href="logout.php">Wyloguj się <i class="fas fa-sign-out-alt"></i></a>
                 </li>
             </ul>
         </div>
