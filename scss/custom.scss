@@ -25,15 +25,21 @@ header {
   }
 }
 
+.welcome {
+  img {
+    height: 275px;
+  }
+}
+
 .adding-incomes {
   position: relative;
+}
 
-  .container-custom {
-    width: 576px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+.container-custom {
+  width: 576px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .middle-col {
@@ -70,6 +76,12 @@ footer {
       h2 {
         font-size: 1.625rem;
       }
+    }
+  }
+
+  .welcome {
+    img {
+      height: 200px;
     }
   }
 
