@@ -97,6 +97,24 @@ if ($_SESSION['success']) {
             ":id" => $i
         ]);
     }
+    // Pobierz ilość wierszy z tabeli payment_methods_default
+    $query = $db->prepare('SELECT * FROM payment_methods_default');
+    $query->execute();
+    $rowAmount = $query->rowCount();
+
+    // Przypisuj formy płatności do nowo utworzonego konta
+    for ($i = 1; $i <= $rowAmount; $i++) {
+        $query = $db->prepare("INSERT INTO payment_methods_assigned_to_users 
+        VALUES (
+            NULL,
+            (SELECT id FROM users WHERE login = :login_posted),
+            (SELECT name FROM payment_methods_default WHERE id = :id)
+            )");
+        $query->execute([
+            ":login_posted" => $login,
+            ":id" => $i
+        ]);
+    }
     unset($_SESSION['success']);
     $_SESSION['register_completed'] = true;
 }
