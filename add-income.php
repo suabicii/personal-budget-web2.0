@@ -2,6 +2,8 @@
 
 require_once "redirect.php";
 
+$_SESSION['income_added'] = false;
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -57,7 +59,7 @@ require_once "redirect.php";
         <section class="adding-incomes">
             <div class="container-custom border rounded bg-white mt-2 py-2">
                 <div class="row justify-content-center">
-                    <form action="">
+                    <form action="new-income.php" method="post">
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
@@ -72,15 +74,22 @@ require_once "redirect.php";
                             <label class="sr-only" for="category">Kategoria</label>
                             <select name="category" id="category" class="form-control" required>
                                 <option selected disabled>Wybierz kategorię</option>
-                                <option value="1">Wynagrodzenie</option>
-                                <option value="2">Odsetki</option>
-                                <option value="3">Sprzedaż na allegro</option>
-                                <option value="4">Inne</option>
+                                <option value="Salary">Wynagrodzenie</option>
+                                <option value="Interest">Odsetki</option>
+                                <option value="Allegro">Sprzedaż na allegro</option>
+                                <option value="Another">Inne</option>
                             </select>
                         </div>
                         <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                            <label class="sr-only" for="date">Data</label>
+                            <input type="date" name="date" id="date" class="form-control" required>
+                        </div>
+                        <div class="input-group mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
-                            <textarea name="" id="" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
+                            <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
                         <button type="submit" class="btn btn-some">Dodaj</button>
                         <a href="main.php" class="btn btn-danger">Anuluj</a>
@@ -125,7 +134,16 @@ require_once "redirect.php";
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
 
     <!-- Skrypt do wyświetlania modalu po dodaniu przychodu -->
-    <script src="show-modal.js"></script>
+
+    <script src=<?php
+                if (isset($_SESSION['income_added']) && $_SESSION['income_added']) {
+                    echo "show-modal.js";
+                    unset($_SESSION['income_added']);
+                } else {
+                    echo "";
+                }
+                ?>>
+    </script>
 </body>
 
 </html>

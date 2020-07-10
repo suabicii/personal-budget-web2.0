@@ -1,4 +1,4 @@
-$("form").submit(function (evt) {
+$(function () {
   $("#addIncomeConfirmation").modal("show");
   $("#addExpenseConfirmation").modal("show");
 });
