@@ -51,7 +51,7 @@ if ($_POST['password'] != $_POST['passwordConfirmation']) {
 }
 
 if ($_SESSION['success']) {
-    $query = $db->prepare('INSERT INTO users values (NULL, :name, :surname, :email_posted, :login_posted, :password)');
+    $query = $db->prepare('INSERT INTO users VALUES (NULL, :name, :surname, :email_posted, :login_posted, :password)');
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $query->execute([
         ":name" => $_POST['name'],
@@ -60,6 +60,61 @@ if ($_SESSION['success']) {
         ":login_posted" => $login,
         ":password" => $password
     ]);
+
+    // Pobierz ilość wierszy z tabeli incomes_category_default
+    $query = $db->prepare('SELECT * FROM incomes_category_default');
+    $query->execute();
+    $rowAmount = $query->rowCount();
+
+    // Przypisuj kategorie przychodów do nowo utworzonego konta
+    for ($i = 1; $i <= $rowAmount; $i++) {
+        $query = $db->prepare("INSERT INTO incomes_category_assigned_to_users 
+        VALUES (
+            NULL,
+            (SELECT id FROM users WHERE login = :login_posted),
+            (SELECT name FROM incomes_category_default WHERE id = :id)
+            )");
+        $query->execute([
+            ":login_posted" => $login,
+            ":id" => $i
+        ]);
+    }
+    // Pobierz ilość wierszy z tabeli expenses_category_default
+    $query = $db->prepare('SELECT * FROM expenses_category_default');
+    $query->execute();
+    $rowAmount = $query->rowCount();
+
+    // Przypisuj kategorie wydatków do nowo utworzonego konta
+    for ($i = 1; $i <= $rowAmount; $i++) {
+        $query = $db->prepare("INSERT INTO expenses_category_assigned_to_users 
+        VALUES (
+            NULL,
+            (SELECT id FROM users WHERE login = :login_posted),
+            (SELECT name FROM expenses_category_default WHERE id = :id)
+            )");
+        $query->execute([
+            ":login_posted" => $login,
+            ":id" => $i
+        ]);
+    }
+    // Pobierz ilość wierszy z tabeli payment_methods_default
+    $query = $db->prepare('SELECT * FROM payment_methods_default');
+    $query->execute();
+    $rowAmount = $query->rowCount();
+
+    // Przypisuj formy płatności do nowo utworzonego konta
+    for ($i = 1; $i <= $rowAmount; $i++) {
+        $query = $db->prepare("INSERT INTO payment_methods_assigned_to_users 
+        VALUES (
+            NULL,
+            (SELECT id FROM users WHERE login = :login_posted),
+            (SELECT name FROM payment_methods_default WHERE id = :id)
+            )");
+        $query->execute([
+            ":login_posted" => $login,
+            ":id" => $i
+        ]);
+    }
     unset($_SESSION['success']);
     $_SESSION['register_completed'] = true;
 }
