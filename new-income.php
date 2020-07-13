@@ -4,7 +4,7 @@ require_once "database.php";
 session_start();
 
 // dzisiejsza data
-$today = new DateTime();
+$today = date('Y-m-d');
 
 if ($_POST['amount'] < 0) {
     $_SESSION['amount_err'] = '<small class="text-danger">Podaj liczbę dodatnią!</small>';
@@ -12,7 +12,7 @@ if ($_POST['amount'] < 0) {
     exit();
 }
 
-if ($_POST['date'] < $today) {
+if ($_POST['date'] > $today) {
     $_SESSION['date_err'] = '<small class="text-danger">Data nie może być późniejsza od dzisiejszej!</small>';
     header('Location: add-income.php');
     exit();

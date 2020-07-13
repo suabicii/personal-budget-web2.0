@@ -63,7 +63,7 @@ require_once "redirect.php";
                                 <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
                             </div>
                             <label class="sr-only" for="amount">Kwota</label>
-                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" required>
+                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" step="0.01" required>
                         </div>
                         <?php
 
