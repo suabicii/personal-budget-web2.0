@@ -93,23 +93,23 @@ require_once "redirect.php";
                             <select name="category" id="category" class="form-control" required>
                                 <option selected disabled>Wybierz kategorię</option>
                                 <!-- Moim zdaniem lepiej dodać opcję "Wybierz kategorię" zamiast wybranej domyślnie kategorii "Mieszkanie", gdyż w ten sposób użytkownik łatwiej się zorientuje o co tutaj chodzi -->
-                                <option value="food">Jedzenie</option>
-                                <option value="home">Mieszkanie</option>
-                                <option value="transport">Transport</option>
-                                <option value="telecommunication">Telekomunikacja</option>
-                                <option value="healthcare">Opieka zdrowotna</option>
-                                <option value="clothes">Ubranie</option>
-                                <option value="hygiene">Higiena</option>
-                                <option value="children">Dzieci</option>
-                                <option value="entertainment">Rozrywka</option>
-                                <option value="trip">Wycieczka</option>
-                                <option value="courses">Szkolenia</option>
-                                <option value="books">Książki</option>
-                                <option value="savings">Oszczędności</option>
-                                <option value="pension">Na złotą jesień, czyli emeryturę</option>
-                                <option value="debts-repayment">Spłata długów</option>
-                                <option value="donation">Darowizna</option>
-                                <option value="other-expenses">Inne wydatki</option>
+                                <option value="Food">Jedzenie</option>
+                                <option value="Home">Mieszkanie</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Telecommunication">Telekomunikacja</option>
+                                <option value="Healthcare">Opieka zdrowotna</option>
+                                <option value="Clothes">Ubranie</option>
+                                <option value="Hygiene">Higiena</option>
+                                <option value="Kids">Dzieci</option>
+                                <option value="Recreation">Rozrywka</option>
+                                <option value="Trip">Wycieczka</option>
+                                <option value="Courses">Szkolenia</option>
+                                <option value="Books">Książki</option>
+                                <option value="Savings">Oszczędności</option>
+                                <option value="For Retirement">Na złotą jesień, czyli emeryturę</option>
+                                <option value="Debts Repayment">Spłata długów</option>
+                                <option value="Gift">Darowizna</option>
+                                <option value="Another">Inne wydatki</option>
                             </select>
                         </div>
                         <div class="input-group mt-2">
