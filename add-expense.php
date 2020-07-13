@@ -129,7 +129,7 @@ require_once "redirect.php";
                         ?>
                         <div class="input-group mt-2 mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
-                            <textarea name="" id="" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
+                            <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
                         <button type="submit" class="btn btn-some">Dodaj</button>
                         <a href="main.php" class="btn btn-danger">Anuluj</a>
