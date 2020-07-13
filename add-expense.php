@@ -58,7 +58,7 @@ require_once "redirect.php";
             <div class="container-custom border rounded bg-white mt-2 py-2">
                 <div class="row justify-content-center">
                     <form action="">
-                        <div class="input-group mb-2">
+                        <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-2"><i class="far fa-credit-card"></i></div>
                             </div>
@@ -70,14 +70,22 @@ require_once "redirect.php";
                                 <option value="credit-card">Karta kredytowa</option>
                             </select>
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
                             </div>
                             <label class="sr-only" for="amount">Kwota</label>
-                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" required>
+                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" step="0.01" required>
                         </div>
-                        <div class="input-group mb-2">
+                        <?php
+
+                        if (isset($_SESSION['amount_err'])) {
+                            echo $_SESSION['amount_err'];
+                            unset($_SESSION['amount_err']);
+                        }
+
+                        ?>
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-2"><i class="fas fa-money-check"></i></div>
                             </div>
@@ -104,7 +112,22 @@ require_once "redirect.php";
                                 <option value="other-expenses">Inne wydatki</option>
                             </select>
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                            <label class="sr-only" for="date">Data</label>
+                            <input type="date" name="date" id="date" class="form-control" required>
+                        </div>
+                        <?php
+
+                        if (isset($_SESSION['date_err'])) {
+                            echo $_SESSION['date_err'];
+                            unset($_SESSION['date_err']);
+                        }
+
+                        ?>
+                        <div class="input-group mt-2 mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
                             <textarea name="" id="" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
@@ -151,7 +174,14 @@ require_once "redirect.php";
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
 
     <!-- Skrypt do wyświetlania modalu po dodaniu wydatku -->
-    <script src="show-modal.js"></script>
+    <?php
+    if (isset($_SESSION['expense_added'])) {
+        echo '<script>$("#addExpenseConfirmation").modal("show");</script>';
+        unset($_SESSION['expense_added']);
+    } else {
+        echo "";
+    }
+    ?>
 </body>
 
 </html>
