@@ -3,10 +3,20 @@
 require_once "database.php";
 session_start();
 
-/* if (!isset($_SESSION['income_added'])) {
+// dzisiejsza data
+$today = new DateTime();
+
+if ($_POST['amount'] < 0) {
+    $_SESSION['amount_err'] = '<small class="text-danger">Podaj liczbę dodatnią!</small>';
     header('Location: add-income.php');
     exit();
-} */
+}
+
+if ($_POST['date'] < $today) {
+    $_SESSION['date_err'] = '<small class="text-danger">Data nie może być późniejsza od dzisiejszej!</small>';
+    header('Location: add-income.php');
+    exit();
+}
 
 $query = $db->prepare('SELECT id FROM incomes_category_assigned_to_users WHERE user_id = :user_id AND name = :name');
 $query->execute([

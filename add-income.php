@@ -58,14 +58,22 @@ require_once "redirect.php";
             <div class="container-custom border rounded bg-white mt-2 py-2">
                 <div class="row justify-content-center">
                     <form action="new-income.php" method="post">
-                        <div class="input-group mb-2">
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
                             </div>
                             <label class="sr-only" for="amount">Kwota</label>
                             <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" required>
                         </div>
-                        <div class="input-group mb-2">
+                        <?php
+
+                        if (isset($_SESSION['amount_err'])) {
+                            echo $_SESSION['amount_err'];
+                            unset($_SESSION['amount_err']);
+                        }
+
+                        ?>
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-2"><i class="fas fa-money-check"></i></div>
                             </div>
@@ -78,14 +86,22 @@ require_once "redirect.php";
                                 <option value="Another">Inne</option>
                             </select>
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                             </div>
                             <label class="sr-only" for="date">Data</label>
                             <input type="date" name="date" id="date" class="form-control" required>
                         </div>
-                        <div class="input-group mb-2">
+                        <?php
+
+                        if (isset($_SESSION['date_err'])) {
+                            echo $_SESSION['date_err'];
+                            unset($_SESSION['date_err']);
+                        }
+
+                        ?>
+                        <div class="input-group mt-2 mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
                             <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
