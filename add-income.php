@@ -2,8 +2,6 @@
 
 require_once "redirect.php";
 
-$_SESSION['income_added'] = false;
-
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -134,16 +132,14 @@ $_SESSION['income_added'] = false;
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
 
     <!-- Skrypt do wyświetlania modalu po dodaniu przychodu -->
-
-    <script src=<?php
-                if (isset($_SESSION['income_added']) && $_SESSION['income_added']) {
-                    echo "show-modal.js";
-                    unset($_SESSION['income_added']);
-                } else {
-                    echo "";
-                }
-                ?>>
-    </script>
+    <?php
+    if (isset($_SESSION['income_added'])) {
+        echo '<script>$("#addIncomeConfirmation").modal("show");</script>';
+        unset($_SESSION['income_added']);
+    } else {
+        echo "";
+    }
+    ?>
 </body>
 
 </html>
