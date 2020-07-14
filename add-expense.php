@@ -1,6 +1,9 @@
 <?php
 
 require_once "redirect.php";
+$_SESSION['adding_expense'] = true;
+
+if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
 ?>
 <!DOCTYPE html>
@@ -57,7 +60,7 @@ require_once "redirect.php";
         <section class="adding-incomes">
             <div class="container-custom border rounded bg-white mt-2 py-2">
                 <div class="row justify-content-center">
-                    <form action="">
+                    <form action="insert.php" method="post">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-2"><i class="far fa-credit-card"></i></div>
@@ -65,9 +68,9 @@ require_once "redirect.php";
                             <label class="sr-only" for="payment">Sposób płatności</label>
                             <select name="payment" id="payment" class="form-control">
                                 <option selected disabled>Wybierz sposób płatności</option>
-                                <option value="cash">Gotówka</option>
-                                <option value="debit-card">Karta debetowa</option>
-                                <option value="credit-card">Karta kredytowa</option>
+                                <option value="Cash">Gotówka</option>
+                                <option value="Debit Card">Karta debetowa</option>
+                                <option value="Credit Card">Karta kredytowa</option>
                             </select>
                         </div>
                         <div class="input-group mt-2">
@@ -177,6 +180,7 @@ require_once "redirect.php";
     <?php
     if (isset($_SESSION['expense_added'])) {
         echo '<script>$("#addExpenseConfirmation").modal("show");</script>';
+        unset($_SESSION['adding_expense']);
         unset($_SESSION['expense_added']);
     } else {
         echo "";
