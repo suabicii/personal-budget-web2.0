@@ -1,6 +1,9 @@
 <?php
 
 require_once "redirect.php";
+$_SESSION['adding_expense'] = true;
+
+if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
 ?>
 <!DOCTYPE html>
@@ -57,27 +60,35 @@ require_once "redirect.php";
         <section class="adding-incomes">
             <div class="container-custom border rounded bg-white mt-2 py-2">
                 <div class="row justify-content-center">
-                    <form action="">
-                        <div class="input-group mb-2">
+                    <form action="insert.php" method="post">
+                        <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-2"><i class="far fa-credit-card"></i></div>
                             </div>
                             <label class="sr-only" for="payment">Sposób płatności</label>
                             <select name="payment" id="payment" class="form-control">
                                 <option selected disabled>Wybierz sposób płatności</option>
-                                <option value="cash">Gotówka</option>
-                                <option value="debit-card">Karta debetowa</option>
-                                <option value="credit-card">Karta kredytowa</option>
+                                <option value="Cash">Gotówka</option>
+                                <option value="Debit Card">Karta debetowa</option>
+                                <option value="Credit Card">Karta kredytowa</option>
                             </select>
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-3"><i class="fas fa-dollar-sign"></i></div>
                             </div>
                             <label class="sr-only" for="amount">Kwota</label>
-                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" required>
+                            <input type="number" name="amount" id="amount" class="form-control" placeholder="Kwota" step="0.01" required>
                         </div>
-                        <div class="input-group mb-2">
+                        <?php
+
+                        if (isset($_SESSION['amount_err'])) {
+                            echo $_SESSION['amount_err'];
+                            unset($_SESSION['amount_err']);
+                        }
+
+                        ?>
+                        <div class="input-group mt-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text pr-2"><i class="fas fa-money-check"></i></div>
                             </div>
@@ -85,28 +96,43 @@ require_once "redirect.php";
                             <select name="category" id="category" class="form-control" required>
                                 <option selected disabled>Wybierz kategorię</option>
                                 <!-- Moim zdaniem lepiej dodać opcję "Wybierz kategorię" zamiast wybranej domyślnie kategorii "Mieszkanie", gdyż w ten sposób użytkownik łatwiej się zorientuje o co tutaj chodzi -->
-                                <option value="food">Jedzenie</option>
-                                <option value="home">Mieszkanie</option>
-                                <option value="transport">Transport</option>
-                                <option value="telecommunication">Telekomunikacja</option>
-                                <option value="healthcare">Opieka zdrowotna</option>
-                                <option value="clothes">Ubranie</option>
-                                <option value="hygiene">Higiena</option>
-                                <option value="children">Dzieci</option>
-                                <option value="entertainment">Rozrywka</option>
-                                <option value="trip">Wycieczka</option>
-                                <option value="courses">Szkolenia</option>
-                                <option value="books">Książki</option>
-                                <option value="savings">Oszczędności</option>
-                                <option value="pension">Na złotą jesień, czyli emeryturę</option>
-                                <option value="debts-repayment">Spłata długów</option>
-                                <option value="donation">Darowizna</option>
-                                <option value="other-expenses">Inne wydatki</option>
+                                <option value="Food">Jedzenie</option>
+                                <option value="Home">Mieszkanie</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Telecommunication">Telekomunikacja</option>
+                                <option value="Healthcare">Opieka zdrowotna</option>
+                                <option value="Clothes">Ubranie</option>
+                                <option value="Hygiene">Higiena</option>
+                                <option value="Kids">Dzieci</option>
+                                <option value="Recreation">Rozrywka</option>
+                                <option value="Trip">Wycieczka</option>
+                                <option value="Courses">Szkolenia</option>
+                                <option value="Books">Książki</option>
+                                <option value="Savings">Oszczędności</option>
+                                <option value="For Retirement">Na złotą jesień, czyli emeryturę</option>
+                                <option value="Debts Repayment">Spłata długów</option>
+                                <option value="Gift">Darowizna</option>
+                                <option value="Another">Inne wydatki</option>
                             </select>
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                            <label class="sr-only" for="date">Data</label>
+                            <input type="date" name="date" id="date" class="form-control" required>
+                        </div>
+                        <?php
+
+                        if (isset($_SESSION['date_err'])) {
+                            echo $_SESSION['date_err'];
+                            unset($_SESSION['date_err']);
+                        }
+
+                        ?>
+                        <div class="input-group mt-2 mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
-                            <textarea name="" id="" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
+                            <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
                         <button type="submit" class="btn btn-some">Dodaj</button>
                         <a href="main.php" class="btn btn-danger">Anuluj</a>
@@ -151,7 +177,15 @@ require_once "redirect.php";
     <script src="bootstrap-4.5.0/dist/js/bootstrap.min.js"></script>
 
     <!-- Skrypt do wyświetlania modalu po dodaniu wydatku -->
-    <script src="show-modal.js"></script>
+    <?php
+    if (isset($_SESSION['expense_added'])) {
+        echo '<script>$("#addExpenseConfirmation").modal("show");</script>';
+        unset($_SESSION['adding_expense']);
+        unset($_SESSION['expense_added']);
+    } else {
+        echo "";
+    }
+    ?>
 </body>
 
 </html>
