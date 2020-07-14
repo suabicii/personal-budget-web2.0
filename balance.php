@@ -1,6 +1,10 @@
 <?php
 
 require_once "redirect.php";
+require_once "summary.php";
+
+if (isset($_SESSION['adding_expense'])) unset($_SESSION['adding_expense']);
+else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
 ?>
 <!DOCTYPE html>
@@ -54,9 +58,10 @@ require_once "redirect.php";
                         Wybierz okres
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="current-month" href="#">Bieżący miesiąc</a>
-                        <a class="dropdown-item" id="previous-month" href="#">Poprzedni miesiąc</a>
-                        <a class="dropdown-item" id="current-year" href="#">Bieżący rok</a>
+                        <a class="dropdown-item" id="current-month" href="./date-choice/current-month.php
+                        ">Bieżący miesiąc</a>
+                        <a class="dropdown-item" id="previous-month" href="./date-choice/previous-month.php">Poprzedni miesiąc</a>
+                        <a class="dropdown-item" id="current-year" href="./date-choice/current-year.php">Bieżący rok</a>
                         <button class="dropdown-item" id="custom-date" data-toggle="modal" data-target="#customDateModal">Niestandardowy</button>
                     </div>
                 </li>
@@ -254,7 +259,7 @@ require_once "redirect.php";
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="">
+                    <form action="./date-choice/custom.php" method="post">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
                                 <label for="start-date" class="mr-2">Od</label>
