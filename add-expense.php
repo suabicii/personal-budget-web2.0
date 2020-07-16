@@ -100,7 +100,7 @@ if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                                 <option value="Home">Mieszkanie</option>
                                 <option value="Transport">Transport</option>
                                 <option value="Telecommunication">Telekomunikacja</option>
-                                <option value="Healthcare">Opieka zdrowotna</option>
+                                <option value="Health">Opieka zdrowotna</option>
                                 <option value="Clothes">Ubranie</option>
                                 <option value="Hygiene">Higiena</option>
                                 <option value="Kids">Dzieci</option>
