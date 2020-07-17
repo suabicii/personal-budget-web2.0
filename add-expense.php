@@ -110,7 +110,7 @@ if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                                 <option value="Books">Książki</option>
                                 <option value="Savings">Oszczędności</option>
                                 <option value="For Retirement">Na złotą jesień, czyli emeryturę</option>
-                                <option value="Debts Repayment">Spłata długów</option>
+                                <option value="Debt Repayment">Spłata długów</option>
                                 <option value="Gift">Darowizna</option>
                                 <option value="Another">Inne wydatki</option>
                             </select>
