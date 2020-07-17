@@ -97,7 +97,7 @@ if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                                 <option selected disabled>Wybierz kategorię</option>
                                 <!-- Moim zdaniem lepiej dodać opcję "Wybierz kategorię" zamiast wybranej domyślnie kategorii "Mieszkanie", gdyż w ten sposób użytkownik łatwiej się zorientuje o co tutaj chodzi -->
                                 <option value="Food">Jedzenie</option>
-                                <option value="Home">Mieszkanie</option>
+                                <option value="Apartments">Mieszkanie</option>
                                 <option value="Transport">Transport</option>
                                 <option value="Telecommunication">Telekomunikacja</option>
                                 <option value="Health">Opieka zdrowotna</option>
