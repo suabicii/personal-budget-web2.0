@@ -7,7 +7,9 @@ let period = document.querySelector(".period");
 let sumOfIncomes = document.getElementById("incomes");
 let sumOfExpenses = document.getElementById("expenses");
 
-difference.textContent = sumOfIncomes.textContent - sumOfExpenses.textContent;
+difference.textContent = (
+  sumOfIncomes.textContent - sumOfExpenses.textContent
+).toFixed(2);
 
 const getFeedback = () => {
   if (difference.textContent > 0) {
@@ -41,14 +43,6 @@ const choosePeriod = () => {
   });
 };
 
-// Modal
-
-// closeModalBtn.addEventListener("click", () => (modal.style.display = "none"));
-/* customDateForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  modal.style.display = "none";
-}); */
-
 getFeedback();
 choosePeriod();
 
@@ -67,13 +61,19 @@ if (window.innerWidth > 1200) {
   chartWidth = 350;
 }
 
+// Zmienne przypisane do poszczególnych kategorii
+const salary = document.querySelector("#salary");
+const interest = document.querySelector("#interest");
+const allegro = document.querySelector("#allegro");
+const anotherIncomes = document.querySelector("#another-incomes");
+
 const drawChartOfIncomes = () => {
   let data = google.visualization.arrayToDataTable([
     ["Kategoria", "Kwota"],
-    ["Wynagrodzenie", 5000],
-    ["Odsetki bankowe", 300],
-    ["Sprzedaż na allegro", 1000],
-    ["Inne", 1000],
+    ["Wynagrodzenie", parseFloat(salary.textContent)], // Zamiana string na liczbę
+    ["Odsetki bankowe", parseFloat(interest.textContent)],
+    ["Sprzedaż na allegro", parseFloat(allegro.textContent)],
+    ["Inne", parseFloat(anotherIncomes.textContent)],
   ]);
 
   let options = { title: "Przychody", width: chartWidth, height: 400 };
@@ -84,26 +84,45 @@ const drawChartOfIncomes = () => {
   chart.draw(data, options);
 };
 
+// Zmienne przypisane do poszczególnych kategorii
+const food = document.querySelector("#food");
+const apartments = document.querySelector("#apartments");
+const transport = document.querySelector("#transport");
+const telecommunication = document.querySelector("#telecommunication");
+const health = document.querySelector("#health");
+const clothes = document.querySelector("#clothes");
+const hygiene = document.querySelector("#hygiene");
+const kids = document.querySelector("#kids");
+const recreation = document.querySelector("#recreation");
+const trip = document.querySelector("#trip");
+const courses = document.querySelector("#courses");
+const books = document.querySelector("#books");
+const savings = document.querySelector("#savings");
+const retirement = document.querySelector("#retirement");
+const debts = document.querySelector("#debt-repayment");
+const gift = document.querySelector("#gift");
+const anotherExpenses = document.querySelector("#another-expenses");
+
 const drawChartOfExpenses = () => {
   let data = google.visualization.arrayToDataTable([
     ["Kategoria", "Kwota"],
-    ["Jedzenie", 600],
-    ["Mieszkanie", 1000],
-    ["Transport", 300],
-    ["Telekomunikacja", 45],
-    ["Opieka zdrowotna", 80],
-    ["Ubranie", 225],
-    ["Higiena", 44],
-    ["Dzieci", 0],
-    ["Rozrywka", 24],
-    ["Wycieczka", 0],
-    ["Szkolenia", 38],
-    ["Książki", 24],
-    ["Oszczędności", 100],
-    ["Na złotą jesień, czyli emeryturę", 500],
-    ["Spłata długów", 0],
-    ["Darowizna", 100],
-    ["Inne wydatki", 200],
+    ["Jedzenie", parseFloat(food.textContent)],
+    ["Mieszkanie", parseFloat(apartments.textContent)],
+    ["Transport", parseFloat(transport.textContent)],
+    ["Telekomunikacja", parseFloat(telecommunication.textContent)],
+    ["Opieka zdrowotna", parseFloat(health.textContent)],
+    ["Ubranie", parseFloat(clothes.textContent)],
+    ["Higiena", parseFloat(hygiene.textContent)],
+    ["Dzieci", parseFloat(kids.textContent)],
+    ["Rozrywka", parseFloat(recreation.textContent)],
+    ["Wycieczka", parseFloat(trip.textContent)],
+    ["Szkolenia", parseFloat(courses.textContent)],
+    ["Książki", parseFloat(books.textContent)],
+    ["Oszczędności", parseFloat(savings.textContent)],
+    ["Na złotą jesień, czyli emeryturę", parseFloat(retirement.textContent)],
+    ["Spłata długów", parseFloat(debts.textContent)],
+    ["Darowizna", parseFloat(gift.textContent)],
+    ["Inne wydatki", parseFloat(anotherExpenses.textContent)],
   ]);
 
   let options = { title: "Wydatki", width: chartWidth, height: 400 };
