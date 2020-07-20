@@ -81,6 +81,8 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                     // Obliczanie bilansu
                     $incomes = $_SESSION['incomes'];
                     $expenses = $_SESSION['expenses'];
+                    unset($_SESSION['incomes']);
+                    unset($_SESSION['expenses']);
                     $income_category = 'income_category_assigned_to_user_id';
                     $expense_category = 'expense_category_assigned_to_user_id';
 
@@ -89,6 +91,12 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                     $query = $db->prepare("SELECT * FROM incomes_category_default");
                     $query->execute();
                     $amountOfIncomesCategories = $query->rowCount();
+
+                    // definiowanie ram czasowych do pobierania przychodów i wydatków
+                    $startDate = $_SESSION['start_date'];
+                    $endDate = $_SESSION['end_date'];
+                    unset($_SESSION['start_date']);
+                    unset($_SESSION['end_date']);
 
                     if ($_SESSION['logged_id'] > 1) {
                         $lastIncomeCategoryId = $amountOfIncomesCategories * $_SESSION['logged_id'];
@@ -102,7 +110,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
                     // Sumowanie przychodów wg kategorii
                     for ($i; $i <= $lastIncomeCategoryId; $i++) {
-                        $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i}");
+                        $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDate->format('Y-m-d')}' AND '{$endDate->format('Y-m-d')}'");
                         $query->execute();
                         $sumOfIncomesInCategory[$j] = $query->fetch();
                         $j++;
@@ -124,7 +132,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
                     // Sumowanie wydatków wg kategorii
                     for ($i; $i <= $lastExpenseCategoryId; $i++) {
-                        $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i}");
+                        $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDate->format('Y-m-d')}' AND '{$endDate->format('Y-m-d')}'");
                         $query->execute();
                         $sumOfExpensesInCategory[$j] = $query->fetch();
                         $j++;
@@ -289,12 +297,6 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 </div>
 
 END;
-                    unset($sumOfAllIncomes);
-                    unset($sumOfAllExpenses);
-                    unset($sumOfIncomesInCategory);
-                    unset($sumOfExpensesInCategory);
-                    unset($_SESSION['incomes']);
-                    unset($_SESSION['expenses']);
                     ?>
             </section>
 
