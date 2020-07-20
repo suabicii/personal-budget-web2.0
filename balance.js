@@ -25,26 +25,7 @@ const getFeedback = () => {
   }
 };
 
-const choosePeriod = () => {
-  dropdownOptions.forEach((option) => {
-    option.addEventListener("click", () => {
-      let optionID = option.getAttribute("id");
-
-      if (optionID == "current-month")
-        period.textContent = "z bieżącego miesiąca";
-      else if (optionID == "previous-month")
-        period.textContent = "z poprzedniego miesiąca";
-      else if (optionID == "current-year")
-        period.textContent = "z bieżącego roku";
-      else {
-        period.textContent = "z wybranego okresu";
-      }
-    });
-  });
-};
-
 getFeedback();
-choosePeriod();
 
 // Wykresy kołowe
 

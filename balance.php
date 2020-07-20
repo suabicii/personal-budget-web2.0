@@ -3,10 +3,16 @@
 require_once "redirect.php";
 require_once "database.php";
 
-if (!isset($_SESSION['default_period'])) {
+if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month'])) {
     $_SESSION['default_period'] = true;
     header('Location: ./date-choice/current-month.php');
-} else unset($_SESSION['default_period']);
+} else if (isset($_SESSION['previous_month'])) {
+    unset($_SESSION['previous_month']);
+    $period = '<span>z poprzedniego miesiąca</span>';
+} else {
+    unset($_SESSION['default_period']);
+    $period = '<span>z bieżącego miesiąca</span>';
+}
 
 if (isset($_SESSION['adding_expense'])) unset($_SESSION['adding_expense']);
 else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
@@ -28,7 +34,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
     <header class="text-white text-center bg-dark py-2">
         <div class="header-content py-2">
             <h1 class="display-4">Menedżer budżetu osobistego</h1>
-            <h2>Bilans <span class="period">z bieżącego miesiąca</span></h2>
+            <h2>Bilans <?= $period ?></h2>
         </div>
     </header>
 
