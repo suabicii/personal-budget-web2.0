@@ -92,7 +92,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                     $query->execute();
                     $amountOfIncomesCategories = $query->rowCount();
 
-                    // definiowanie ram czasowych do pobierania przychodów i wydatków
+                    // Pobieranie ram czasowych do pobierania przychodów i wydatków
                     $startDate = $_SESSION['start_date'];
                     $endDate = $_SESSION['end_date'];
                     unset($_SESSION['start_date']);
@@ -106,6 +106,8 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                         $i = 1;
                     }
 
+                    // Licznik do przypisywania przychodów/wydatków w taki sposób,
+                    // aby indeksy miały wartość od 1 do n
                     $j = 1;
 
                     // Sumowanie przychodów wg kategorii
