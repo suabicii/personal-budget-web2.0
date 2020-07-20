@@ -3,12 +3,15 @@
 require_once "redirect.php";
 require_once "database.php";
 
-if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month'])) {
+if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month']) && !$_SESSION['current_year']) {
     $_SESSION['default_period'] = true;
     header('Location: ./date-choice/current-month.php');
 } else if (isset($_SESSION['previous_month'])) {
     unset($_SESSION['previous_month']);
     $period = '<span>z poprzedniego miesiąca</span>';
+} else if (isset($_SESSION['current_year'])) {
+    unset($_SESSION['current_year']);
+    $period = '<span>z bieżącego roku</span>';
 } else {
     unset($_SESSION['default_period']);
     $period = '<span>z bieżącego miesiąca</span>';
