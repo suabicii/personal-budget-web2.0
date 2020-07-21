@@ -69,17 +69,6 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 <li class="nav-item ml-lg-5 m-auto">
                     <a class=" nav-link" href="logout.php">Wyloguj się <i class="fas fa-sign-out-alt"></i></a>
                 </li>
-                <li class="nav-item dropdown active ml-lg-5 m-auto">
-                    <a class="nav-link dropdown-toggle dropdown-heading" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Wybierz okres
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="current-month" href="./date-choice/current-month.php">Bieżący miesiąc</a>
-                        <a class="dropdown-item" id="previous-month" href="./date-choice/previous-month.php">Poprzedni miesiąc</a>
-                        <a class="dropdown-item" id="current-year" href="./date-choice/current-year.php">Bieżący rok</a>
-                        <button class="dropdown-item" id="custom-date" data-toggle="modal" data-target="#customDateModal">Niestandardowy</button>
-                    </div>
-                </li>
             </ul>
         </div>
     </nav>
@@ -87,91 +76,113 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
     <main>
         <div class="container border rounded bg-white mt-2 pt-3">
             <section class="balance">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-dark btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Wybierz widok
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" id="current-month" href="#">Ogólny</a>
+                            <a class="dropdown-item" id="previous-month" href="#">Szczegółowy</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-info btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Wybierz okres
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" id="current-month" href="./date-choice/current-month.php">Bieżący miesiąc</a>
+                            <a class="dropdown-item" id="previous-month" href="./date-choice/previous-month.php">Poprzedni miesiąc</a>
+                            <a class="dropdown-item" id="current-year" href="./date-choice/current-year.php">Bieżący rok</a>
+                            <button class="dropdown-item" id="custom-date" data-toggle="modal" data-target="#customDateModal">Niestandardowy</button>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                // Obliczanie bilansu
+                $incomes = $_SESSION['incomes'];
+                $expenses = $_SESSION['expenses'];
+                unset($_SESSION['incomes']);
+                unset($_SESSION['expenses']);
+                $income_category = 'income_category_assigned_to_user_id';
+                $expense_category = 'expense_category_assigned_to_user_id';
+
+                $sumOfAllIncomes = 0;
+                $sumOfAllExpenses = 0;
+                $query = $db->prepare("SELECT * FROM incomes_category_default");
+                $query->execute();
+                $amountOfIncomesCategories = $query->rowCount();
+
+                // Pobieranie ram czasowych do pobierania przychodów i wydatków
+                $startDate = $_SESSION['start_date'];
+                $endDate = $_SESSION['end_date'];
+                unset($_SESSION['start_date']);
+                unset($_SESSION['end_date']);
+
+                if (isset($_SESSION['custom_date'])) {
+                    $startDateForQuery = $startDate;
+                    $endDateForQuery = $endDate;
+                    unset($_SESSION['custom_date']);
+                } else {
+                    $startDateForQuery = $startDate->format('Y-m-d');
+                    $endDateForQuery = $endDate->format('Y-m-d');
+                }
+
+
+                if ($_SESSION['logged_id'] > 1) {
+                    $lastIncomeCategoryId = $amountOfIncomesCategories * $_SESSION['logged_id'];
+                    $i = $amountOfIncomesCategories + 1;
+                } else {
+                    $lastIncomeCategoryId = $amountOfIncomesCategories;
+                    $i = 1;
+                }
+
+                // Licznik do przypisywania przychodów/wydatków w taki sposób,
+                // aby indeksy miały wartość od 1 do n
+                $j = 1;
+
+                // Sumowanie przychodów wg kategorii
+                for ($i; $i <= $lastIncomeCategoryId; $i++) {
+                    $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
+                    $query->execute();
+                    $sumOfIncomesInCategory[$j] = $query->fetch();
+                    $j++;
+                }
+
+                $query = $db->prepare('SELECT * FROM expenses_category_default');
+                $query->execute();
+                $amountOfExpensesCategories = $query->rowCount();
+
+                if ($_SESSION['logged_id'] > 1) {
+                    $lastExpenseCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
+                    $i = $amountOfExpensesCategories + 1;
+                } else {
+                    $lastExpenseCategoryId = $amountOfExpensesCategories;
+                    $i = 1;
+                }
+
+                $j = 1;
+
+                // Sumowanie wydatków wg kategorii
+                for ($i; $i <= $lastExpenseCategoryId; $i++) {
+                    $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
+                    $query->execute();
+                    $sumOfExpensesInCategory[$j] = $query->fetch();
+                    $j++;
+                }
+
+                // Sumowanie wszystkich przychodów i wydatków
+                foreach ($incomes as $income) {
+                    $sumOfAllIncomes += $income['amount'];
+                }
+
+                foreach ($expenses as $expense) {
+                    $sumOfAllExpenses += $expense['amount'];
+                }
+
+                // Wstawianie wartości do tabel
+                echo <<< END
                 <div class="row justify-content-between">
-                    <?php
-                    // Obliczanie bilansu
-                    $incomes = $_SESSION['incomes'];
-                    $expenses = $_SESSION['expenses'];
-                    unset($_SESSION['incomes']);
-                    unset($_SESSION['expenses']);
-                    $income_category = 'income_category_assigned_to_user_id';
-                    $expense_category = 'expense_category_assigned_to_user_id';
-
-                    $sumOfAllIncomes = 0;
-                    $sumOfAllExpenses = 0;
-                    $query = $db->prepare("SELECT * FROM incomes_category_default");
-                    $query->execute();
-                    $amountOfIncomesCategories = $query->rowCount();
-
-                    // Pobieranie ram czasowych do pobierania przychodów i wydatków
-                    $startDate = $_SESSION['start_date'];
-                    $endDate = $_SESSION['end_date'];
-                    unset($_SESSION['start_date']);
-                    unset($_SESSION['end_date']);
-
-                    if (isset($_SESSION['custom_date'])) {
-                        $startDateForQuery = $startDate;
-                        $endDateForQuery = $endDate;
-                        unset($_SESSION['custom_date']);
-                    } else {
-                        $startDateForQuery = $startDate->format('Y-m-d');
-                        $endDateForQuery = $endDate->format('Y-m-d');
-                    }
-
-
-                    if ($_SESSION['logged_id'] > 1) {
-                        $lastIncomeCategoryId = $amountOfIncomesCategories * $_SESSION['logged_id'];
-                        $i = $amountOfIncomesCategories + 1;
-                    } else {
-                        $lastIncomeCategoryId = $amountOfIncomesCategories;
-                        $i = 1;
-                    }
-
-                    // Licznik do przypisywania przychodów/wydatków w taki sposób,
-                    // aby indeksy miały wartość od 1 do n
-                    $j = 1;
-
-                    // Sumowanie przychodów wg kategorii
-                    for ($i; $i <= $lastIncomeCategoryId; $i++) {
-                        $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
-                        $query->execute();
-                        $sumOfIncomesInCategory[$j] = $query->fetch();
-                        $j++;
-                    }
-
-                    $query = $db->prepare('SELECT * FROM expenses_category_default');
-                    $query->execute();
-                    $amountOfExpensesCategories = $query->rowCount();
-
-                    if ($_SESSION['logged_id'] > 1) {
-                        $lastExpenseCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
-                        $i = $amountOfExpensesCategories + 1;
-                    } else {
-                        $lastExpenseCategoryId = $amountOfExpensesCategories;
-                        $i = 1;
-                    }
-
-                    $j = 1;
-
-                    // Sumowanie wydatków wg kategorii
-                    for ($i; $i <= $lastExpenseCategoryId; $i++) {
-                        $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
-                        $query->execute();
-                        $sumOfExpensesInCategory[$j] = $query->fetch();
-                        $j++;
-                    }
-
-                    // Sumowanie wszystkich przychodów i wydatków
-                    foreach ($incomes as $income) {
-                        $sumOfAllIncomes += $income['amount'];
-                    }
-
-                    foreach ($expenses as $expense) {
-                        $sumOfAllExpenses += $expense['amount'];
-                    }
-
-                    // Wstawianie wartości do tabel
-                    echo <<< END
                     <div class="col">
                         <h3 class="text-center">Przychody</h3>
                         <table class="table table-bordered">
@@ -320,7 +331,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 </div>
 
 END;
-                    ?>
+                ?>
             </section>
 
             <section class="charts">
