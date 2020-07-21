@@ -3,7 +3,7 @@
 require_once "redirect.php";
 require_once "database.php";
 
-if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month']) && !$_SESSION['current_year']) {
+if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month']) && !isset($_SESSION['current_year']) && !isset($_SESSION['custom_date'])) {
     $_SESSION['default_period'] = true;
     header('Location: ./date-choice/current-month.php');
 } else if (isset($_SESSION['previous_month'])) {
@@ -12,6 +12,8 @@ if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month']) &
 } else if (isset($_SESSION['current_year'])) {
     unset($_SESSION['current_year']);
     $period = '<span>z bieżącego roku</span>';
+} else if (isset($_SESSION['custom_date'])) {
+    $period = '<span>z okresu od ' . $_SESSION['start_date'] . ' do ' . $_SESSION['end_date'] . '</span>';
 } else {
     unset($_SESSION['default_period']);
     $period = '<span>z bieżącego miesiąca</span>';
@@ -107,6 +109,16 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                     unset($_SESSION['start_date']);
                     unset($_SESSION['end_date']);
 
+                    if (isset($_SESSION['custom_date'])) {
+                        $startDateForQuery = $startDate;
+                        $endDateForQuery = $endDate;
+                        unset($_SESSION['custom_date']);
+                    } else {
+                        $startDateForQuery = $startDate->format('Y-m-d');
+                        $endDateForQuery = $endDate->format('Y-m-d');
+                    }
+
+
                     if ($_SESSION['logged_id'] > 1) {
                         $lastIncomeCategoryId = $amountOfIncomesCategories * $_SESSION['logged_id'];
                         $i = $amountOfIncomesCategories + 1;
@@ -121,7 +133,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
                     // Sumowanie przychodów wg kategorii
                     for ($i; $i <= $lastIncomeCategoryId; $i++) {
-                        $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDate->format('Y-m-d')}' AND '{$endDate->format('Y-m-d')}'");
+                        $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
                         $query->execute();
                         $sumOfIncomesInCategory[$j] = $query->fetch();
                         $j++;
@@ -143,7 +155,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
                     // Sumowanie wydatków wg kategorii
                     for ($i; $i <= $lastExpenseCategoryId; $i++) {
-                        $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDate->format('Y-m-d')}' AND '{$endDate->format('Y-m-d')}'");
+                        $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
                         $query->execute();
                         $sumOfExpensesInCategory[$j] = $query->fetch();
                         $j++;
@@ -352,7 +364,7 @@ END;
                     <form action="./date-choice/custom.php" method="post">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
-                                <label for="start-date" class="mr-2">Od</label>
+                                <label for="start-date" class="mr-2">Od </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                 </div>
