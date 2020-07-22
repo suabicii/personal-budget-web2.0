@@ -1,6 +1,26 @@
 <?php
 
 require_once "redirect.php";
+require_once "database.php";
+
+if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month']) && !isset($_SESSION['current_year']) && !isset($_SESSION['custom_date'])) {
+    $_SESSION['default_period'] = true;
+    header('Location: ./date-choice/current-month.php');
+} else if (isset($_SESSION['previous_month'])) {
+    unset($_SESSION['previous_month']);
+    $period = '<span>z poprzedniego miesiąca</span>';
+} else if (isset($_SESSION['current_year'])) {
+    unset($_SESSION['current_year']);
+    $period = '<span>z bieżącego roku</span>';
+} else if (isset($_SESSION['custom_date'])) {
+    $period = '<span>z okresu od ' . $_SESSION['start_date'] . ' do ' . $_SESSION['end_date'] . '</span>';
+} else {
+    unset($_SESSION['default_period']);
+    $period = '<span>z bieżącego miesiąca</span>';
+}
+
+if (isset($_SESSION['adding_expense'])) unset($_SESSION['adding_expense']);
+else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
 ?>
 <!DOCTYPE html>
@@ -19,7 +39,7 @@ require_once "redirect.php";
     <header class="text-white text-center bg-dark py-2">
         <div class="header-content py-2">
             <h1 class="display-4">Menedżer budżetu osobistego</h1>
-            <h2>Bilans <span class="period">z bieżącego miesiąca</span></h2>
+            <h2>Bilans <?= $period ?></h2>
         </div>
     </header>
 
@@ -49,17 +69,6 @@ require_once "redirect.php";
                 <li class="nav-item ml-lg-5 m-auto">
                     <a class=" nav-link" href="logout.php">Wyloguj się <i class="fas fa-sign-out-alt"></i></a>
                 </li>
-                <li class="nav-item dropdown active ml-lg-5 m-auto">
-                    <a class="nav-link dropdown-toggle dropdown-heading" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Wybierz okres
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="current-month" href="#">Bieżący miesiąc</a>
-                        <a class="dropdown-item" id="previous-month" href="#">Poprzedni miesiąc</a>
-                        <a class="dropdown-item" id="current-year" href="#">Bieżący rok</a>
-                        <button class="dropdown-item" id="custom-date" data-toggle="modal" data-target="#customDateModal">Niestandardowy</button>
-                    </div>
-                </li>
             </ul>
         </div>
     </nav>
@@ -67,6 +76,139 @@ require_once "redirect.php";
     <main>
         <div class="container border rounded bg-white mt-2 pt-3">
             <section class="balance">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-other btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Wybierz widok
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" id="current-month" href="./view/general.php">Ogólny</a>
+                            <a class="dropdown-item" id="previous-month" href="./view/particular.php">Szczegółowy</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-info btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Wybierz okres
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" id="current-month" href="./date-choice/current-month.php">Bieżący miesiąc</a>
+                            <a class="dropdown-item" id="previous-month" href="./date-choice/previous-month.php">Poprzedni miesiąc</a>
+                            <a class="dropdown-item" id="current-year" href="./date-choice/current-year.php">Bieżący rok</a>
+                            <button class="dropdown-item" id="custom-date" data-toggle="modal" data-target="#customDateModal">Niestandardowy</button>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                // Obliczanie bilansu
+                $incomes = $_SESSION['incomes'];
+                $expenses = $_SESSION['expenses'];
+                unset($_SESSION['incomes']);
+                unset($_SESSION['expenses']);
+                $income_category = 'income_category_assigned_to_user_id';
+                $expense_category = 'expense_category_assigned_to_user_id';
+
+                $sumOfAllIncomes = 0;
+                $sumOfAllExpenses = 0;
+                $query = $db->prepare("SELECT * FROM incomes_category_default");
+                $query->execute();
+                $amountOfIncomesCategories = $query->rowCount();
+
+                // Ustalanie ram czasowych do pobierania przychodów i wydatków
+                $startDate = $_SESSION['start_date'];
+                $endDate = $_SESSION['end_date'];
+                unset($_SESSION['start_date']);
+                unset($_SESSION['end_date']);
+
+                if (isset($_SESSION['custom_date'])) {
+                    $startDateForQuery = $startDate;
+                    $endDateForQuery = $endDate;
+                    unset($_SESSION['custom_date']);
+                } else {
+                    $startDateForQuery = $startDate->format('Y-m-d');
+                    $endDateForQuery = $endDate->format('Y-m-d');
+                }
+
+
+                if ($_SESSION['logged_id'] > 1) {
+                    $lastIncomeCategoryId = $amountOfIncomesCategories * $_SESSION['logged_id'];
+                    $i = $amountOfIncomesCategories + 1;
+                } else {
+                    $lastIncomeCategoryId = $amountOfIncomesCategories;
+                    $i = 1;
+                }
+
+                // Licznik do przypisywania przychodów/wydatków w taki sposób,
+                // aby indeksy miały wartość od 1 do n
+                $j = 1;
+
+                // Sumowanie przychodów wg kategorii
+                for ($i; $i <= $lastIncomeCategoryId; $i++) {
+                    $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
+                    $query->execute();
+                    $sumOfIncomesInCategory[$j] = $query->fetch();
+                    $j++;
+                }
+
+                $query = $db->prepare('SELECT * FROM expenses_category_default');
+                $query->execute();
+                $amountOfExpensesCategories = $query->rowCount();
+
+                if ($_SESSION['logged_id'] > 1) {
+                    $lastExpenseCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
+                    $i = $amountOfExpensesCategories + 1;
+                } else {
+                    $lastExpenseCategoryId = $amountOfExpensesCategories;
+                    $i = 1;
+                }
+
+                $j = 1;
+
+                // Sumowanie wydatków wg kategorii
+                for ($i; $i <= $lastExpenseCategoryId; $i++) {
+                    $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
+                    $query->execute();
+                    $sumOfExpensesInCategory[$j] = $query->fetch();
+                    $j++;
+                }
+
+                // Sumowanie wszystkich przychodów i wydatków
+                foreach ($incomes as $income) {
+                    $sumOfAllIncomes += $income['amount'];
+                }
+
+                foreach ($expenses as $expense) {
+                    $sumOfAllExpenses += $expense['amount'];
+                }
+
+                // Wstawianie wartości do tabel
+                /*  if (isset($_SESSION['particular'])) { // Widok szczegółowy - prace nad nim zostawiam na potem
+                    echo <<< END
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <h3 class="text-center">Przychody</h3>
+                            <table class="table table-bordered">
+                                <thead class="bg-success text-white">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col" class="middle-col">Kategoria</th>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Kwota</th>
+                                        <th scope="col">Komentarz</th>
+                                    </tr>
+END;
+                    echo <<< END
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+END;
+                } else { // Widok ogólny
+                    # code...
+                } */
+                echo <<< END
                 <div class="row justify-content-between">
                     <div class="col">
                         <h3 class="text-center">Przychody</h3>
@@ -82,27 +224,27 @@ require_once "redirect.php";
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>Wynagrodzenie</td>
-                                    <td>5000</td>
+                                    <td id="salary">{$sumOfIncomesInCategory[1]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
                                     <td>Odsetki bankowe</td>
-                                    <td>300</td>
+                                    <td id="interest">{$sumOfIncomesInCategory[2]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
                                     <td>Sprzedaż na allegro</td>
-                                    <td>1000</td>
+                                    <td id="allegro">{$sumOfIncomesInCategory[3]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">4</th>
                                     <td>Inne</td>
-                                    <td>550</td>
+                                    <td id="another-incomes">{$sumOfIncomesInCategory[4]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Razem</th>
                                     <td class="text-center">-</td>
-                                    <th id="incomes">6850</th>
+                                    <th id="incomes">{$sumOfAllIncomes}</th>
                                 </tr>
                             </tbody>
                         </table>
@@ -123,97 +265,100 @@ require_once "redirect.php";
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>Jedzenie</td>
-                                    <td>600</td>
+                                    <td id="food">{$sumOfExpensesInCategory[3]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
                                     <td>Mieszkanie</td>
-                                    <td>1000</td>
+                                    <td id="apartments">{$sumOfExpensesInCategory[4]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
                                     <td>Transport</td>
-                                    <td>300</td>
+                                    <td id="transport">{$sumOfExpensesInCategory[1]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">4</th>
                                     <td>Telekomunikacja</td>
-                                    <td>45</td>
+                                    <td id="telecommunication">{$sumOfExpensesInCategory[5]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">5</th>
                                     <td>Opieka zdrowotna</td>
-                                    <td>80</td>
+                                    <td id="health">{$sumOfExpensesInCategory[6]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">6</th>
                                     <td>Ubranie</td>
-                                    <td>225</td>
+                                    <td id="clothes">{$sumOfExpensesInCategory[7]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">7</th>
                                     <td>Higiena</td>
-                                    <td>44</td>
+                                    <td id="hygiene">{$sumOfExpensesInCategory[8]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">8</th>
                                     <td>Dzieci</td>
-                                    <td>0</td>
+                                    <td id="kids">{$sumOfExpensesInCategory[9]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">9</th>
                                     <td>Rozrywka</td>
-                                    <td>24</td>
+                                    <td id="recreation">{$sumOfExpensesInCategory[10]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">10</th>
                                     <td>Wycieczka</td>
-                                    <td>0</td>
+                                    <td id="trip">{$sumOfExpensesInCategory[11]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">11</th>
                                     <td>Szkolenia</td>
-                                    <td>38</td>
+                                    <td id="courses">{$sumOfExpensesInCategory[17]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">12</th>
                                     <td>Książki</td>
-                                    <td>24</td>
+                                    <td id="books">{$sumOfExpensesInCategory[2]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">13</th>
                                     <td>Oszczędności</td>
-                                    <td>100</td>
+                                    <td id="savings">{$sumOfExpensesInCategory[12]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">14</th>
                                     <td>Na złotą jesień, czyli emeryturę</td>
-                                    <td>500</td>
+                                    <td id="retirement">{$sumOfExpensesInCategory[13]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">15</th>
                                     <td>Spłata długów</td>
-                                    <td>0</td>
+                                    <td id="debt-repayment">{$sumOfExpensesInCategory[14]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">16</th>
                                     <td>Darowizna</td>
-                                    <td>100</td>
+                                    <td id="gift">{$sumOfExpensesInCategory[15]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">17</th>
                                     <td>Inne wydatki</td>
-                                    <td>200</td>
+                                    <td id="another-expenses">{$sumOfExpensesInCategory[16]['SUM(amount)']}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Razem</th>
                                     <td class="text-center">-</td>
-                                    <th id="expenses">3280</th>
+                                    <th id="expenses">{$sumOfAllExpenses}</th>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+END;
+                ?>
             </section>
 
             <section class="charts">
@@ -254,10 +399,10 @@ require_once "redirect.php";
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="">
+                    <form action="./date-choice/custom.php" method="post">
                         <div class="modal-body">
                             <div class="input-group mr-2 mb-2">
-                                <label for="start-date" class="mr-2">Od</label>
+                                <label for="start-date" class="mr-2">Od </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                 </div>
