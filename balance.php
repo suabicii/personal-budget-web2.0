@@ -78,12 +78,12 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
             <section class="balance">
                 <div class="row mb-2">
                     <div class="col-md-6">
-                        <button type="button" class="btn btn-dark btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-other btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Wybierz widok
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" id="current-month" href="#">Ogólny</a>
-                            <a class="dropdown-item" id="previous-month" href="#">Szczegółowy</a>
+                            <a class="dropdown-item" id="current-month" href="./view/general.php">Ogólny</a>
+                            <a class="dropdown-item" id="previous-month" href="./view/particular.php">Szczegółowy</a>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -113,7 +113,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 $query->execute();
                 $amountOfIncomesCategories = $query->rowCount();
 
-                // Pobieranie ram czasowych do pobierania przychodów i wydatków
+                // Ustalanie ram czasowych do pobierania przychodów i wydatków
                 $startDate = $_SESSION['start_date'];
                 $endDate = $_SESSION['end_date'];
                 unset($_SESSION['start_date']);
@@ -181,6 +181,33 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 }
 
                 // Wstawianie wartości do tabel
+                /*  if (isset($_SESSION['particular'])) { // Widok szczegółowy - prace nad nim zostawiam na potem
+                    echo <<< END
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <h3 class="text-center">Przychody</h3>
+                            <table class="table table-bordered">
+                                <thead class="bg-success text-white">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col" class="middle-col">Kategoria</th>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Kwota</th>
+                                        <th scope="col">Komentarz</th>
+                                    </tr>
+END;
+                    echo <<< END
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+END;
+                } else { // Widok ogólny
+                    # code...
+                } */
                 echo <<< END
                 <div class="row justify-content-between">
                     <div class="col">
