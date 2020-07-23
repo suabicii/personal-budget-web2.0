@@ -262,6 +262,59 @@ END;
                     </div>
 
 END;
+
+                    echo <<< END
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <h3 class="text-center">Wydatki</h3>
+                            <table class="table table-bordered">
+                                <thead class="bg-warning text-white">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Kategoria</th>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Kwota</th>
+                                        <th scope="col">Komentarz</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+END;
+                    $query =  $db->prepare("SELECT expenses.user_id, expense_category_assigned_to_user_id, name, amount, date_of_expense, expense_comment FROM expenses, expenses_category_assigned_to_users WHERE expenses_category_assigned_to_users.id = expenses.{$expense_category} AND expenses.user_id = {$_SESSION['logged_id']} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' ORDER BY amount DESC");
+                    $query->execute();
+
+                    $allExpenses = $query->fetchAll();
+                    $amountOfAllExpenses = $query->rowCount();
+
+                    $j = 1;
+
+                    for ($i = 0; $i < $amountOfAllExpenses; $i++) {
+                        $categoryName = $expensesCategories["{$allExpenses[$i]['name']}"];
+                        echo <<< END
+                                    <tr>
+                                        <th scope="row">{$j}</th>
+                                        <td>{$categoryName}</td>
+                                        <td>{$allExpenses[$i]['date_of_expense']}</td>
+                                        <td>{$allExpenses[$i]['amount']}</td>
+                                        <td>{$allExpenses[$i]['expense_comment']}</td>
+                                    </tr>
+END;
+                        $j++;
+                    }
+
+                    echo <<< END
+                                    <tr>
+                                        <th scope="row">Razem</th>
+                                        <td class="text-center">-</td>
+                                        <td class="text-center">-</td>
+                                        <th id="expenses">{$sumOfAllExpenses}</th>
+                                        <td class="text-center">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+END;
                 } else { // Widok ogólny
                     echo <<< END
                 <div class="row justify-content-between">
