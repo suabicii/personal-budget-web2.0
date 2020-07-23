@@ -15,7 +15,7 @@ if (isset($_SESSION['logged_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="icons/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
     <title>Personal Budget Manager 2.0 by Michael Slabikovsky</title>
 </head>
 
