@@ -2,6 +2,7 @@
 
 require_once "redirect.php";
 require_once "database.php";
+require_once "categories.php";
 
 if (!isset($_SESSION['default_period']) && !isset($_SESSION['previous_month']) && !isset($_SESSION['current_year']) && !isset($_SESSION['custom_date'])) {
     $_SESSION['default_period'] = true;
@@ -31,7 +32,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="icons/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
     <title>Personal Budget Manager 2.0 by Michael Slabikovsky</title>
 </head>
 
@@ -86,7 +87,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                             <a class="dropdown-item" id="previous-month" href="./view/particular.php">Szczegółowy</a>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 period-choice">
                         <button type="button" class="btn btn-info btn-lg btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Wybierz okres
                         </button>
@@ -128,13 +129,37 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                     $endDateForQuery = $endDate->format('Y-m-d');
                 }
 
+                // Funkcje umożliwiające sumowanie przychodów/wydatków w pętlach for
+                function getFirstIncomeCategoryId($amountOfIncomesCategories)
+                {
+                    if ($_SESSION['logged_id'] > 1) $i = $amountOfIncomesCategories + 1;
+                    else $i = 1;
 
-                if ($_SESSION['logged_id'] > 1) {
-                    $lastIncomeCategoryId = $amountOfIncomesCategories * $_SESSION['logged_id'];
-                    $i = $amountOfIncomesCategories + 1;
-                } else {
-                    $lastIncomeCategoryId = $amountOfIncomesCategories;
-                    $i = 1;
+                    return $i;
+                }
+
+                function getLastIncomeCategoryId($amountOfExpensesCategories)
+                {
+                    if ($_SESSION['logged_id'] > 1) $lastIncomeCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
+                    else $lastIncomeCategoryId = $amountOfExpensesCategories;
+
+                    return $lastIncomeCategoryId;
+                }
+
+                function getFirstExpenseCategoryId($amountOfExpensesCategories)
+                {
+                    if ($_SESSION['logged_id'] > 1) $i = $amountOfExpensesCategories + 1;
+                    else $i = 1;
+
+                    return $i;
+                }
+
+                function getLastExpenseCategoryId($amountOfExpensesCategories)
+                {
+                    if ($_SESSION['logged_id'] > 1) $lastExpenseCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
+                    else $lastExpenseCategoryId = $amountOfExpensesCategories;
+
+                    return $lastExpenseCategoryId;
                 }
 
                 // Licznik do przypisywania przychodów/wydatków w taki sposób,
@@ -142,7 +167,8 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 $j = 1;
 
                 // Sumowanie przychodów wg kategorii
-                for ($i; $i <= $lastIncomeCategoryId; $i++) {
+                $lastIncomeCategoryId = getLastIncomeCategoryId($amountOfIncomesCategories);
+                for ($i = getFirstIncomeCategoryId($amountOfIncomesCategories); $i <= $lastIncomeCategoryId; $i++) {
                     $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
                     $query->execute();
                     $sumOfIncomesInCategory[$j] = $query->fetch();
@@ -164,7 +190,8 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 $j = 1;
 
                 // Sumowanie wydatków wg kategorii
-                for ($i; $i <= $lastExpenseCategoryId; $i++) {
+                $lastExpenseCategoryId = getLastIncomeCategoryId($amountOfExpensesCategories);
+                for ($i = getFirstIncomeCategoryId($amountOfExpensesCategories); $i <= $lastExpenseCategoryId; $i++) {
                     $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
                     $query->execute();
                     $sumOfExpensesInCategory[$j] = $query->fetch();
@@ -181,7 +208,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                 }
 
                 // Wstawianie wartości do tabel
-                /*  if (isset($_SESSION['particular'])) { // Widok szczegółowy - prace nad nim zostawiam na potem
+                if (isset($_SESSION['particular'])) { // Widok szczegółowy
                     echo <<< END
                     <div class="row justify-content-between">
                         <div class="col">
@@ -190,15 +217,98 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                                 <thead class="bg-success text-white">
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col" class="middle-col">Kategoria</th>
+                                        <th scope="col">Kategoria</th>
                                         <th scope="col">Data</th>
                                         <th scope="col">Kwota</th>
                                         <th scope="col">Komentarz</th>
                                     </tr>
-END;
-                    echo <<< END
                                 </thead>
                                 <tbody>
+END;
+                    // Pobieranie wszystkiego jak leci
+                    $query =  $db->prepare("SELECT incomes.user_id, income_category_assigned_to_user_id, name, amount, date_of_income, income_comment FROM incomes, incomes_category_assigned_to_users WHERE incomes_category_assigned_to_users.id = incomes.{$income_category} AND incomes.user_id = {$_SESSION['logged_id']} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' ORDER BY amount DESC");
+                    $query->execute();
+
+                    $allIncomes = $query->fetchAll();
+                    $amountOfAllIncomes = $query->rowCount();
+
+                    $j = 1;
+
+                    for ($i = 0; $i < $amountOfAllIncomes; $i++) {
+                        $categoryName = $incomesCategories["{$allIncomes[$i]['name']}"];
+                        echo <<< END
+                                    <tr>
+                                        <th scope="row">{$j}</th>
+                                        <td>{$categoryName}</td>
+                                        <td>{$allIncomes[$i]['date_of_income']}</td>
+                                        <td>{$allIncomes[$i]['amount']}</td>
+                                        <td>{$allIncomes[$i]['income_comment']}</td>
+                                    </tr>
+END;
+                        $j++;
+                    }
+
+                    echo <<< END
+                                    <tr>
+                                        <th scope="row">Razem</th>
+                                        <td class="text-center">-</td>
+                                        <td class="text-center">-</td>
+                                        <th id="incomes">{$sumOfAllIncomes}</th>
+                                        <td class="text-center">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+END;
+
+                    echo <<< END
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <h3 class="text-center">Wydatki</h3>
+                            <table class="table table-bordered">
+                                <thead class="bg-warning text-white">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Kategoria</th>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Kwota</th>
+                                        <th scope="col">Komentarz</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+END;
+                    $query =  $db->prepare("SELECT expenses.user_id, expense_category_assigned_to_user_id, name, amount, date_of_expense, expense_comment FROM expenses, expenses_category_assigned_to_users WHERE expenses_category_assigned_to_users.id = expenses.{$expense_category} AND expenses.user_id = {$_SESSION['logged_id']} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' ORDER BY amount DESC");
+                    $query->execute();
+
+                    $allExpenses = $query->fetchAll();
+                    $amountOfAllExpenses = $query->rowCount();
+
+                    $j = 1;
+
+                    for ($i = 0; $i < $amountOfAllExpenses; $i++) {
+                        $categoryName = $expensesCategories["{$allExpenses[$i]['name']}"];
+                        echo <<< END
+                                    <tr>
+                                        <th scope="row">{$j}</th>
+                                        <td>{$categoryName}</td>
+                                        <td>{$allExpenses[$i]['date_of_expense']}</td>
+                                        <td>{$allExpenses[$i]['amount']}</td>
+                                        <td>{$allExpenses[$i]['expense_comment']}</td>
+                                    </tr>
+END;
+                        $j++;
+                    }
+
+                    echo <<< END
+                                    <tr>
+                                        <th scope="row">Razem</th>
+                                        <td class="text-center">-</td>
+                                        <td class="text-center">-</td>
+                                        <th id="expenses">{$sumOfAllExpenses}</th>
+                                        <td class="text-center">-</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -206,9 +316,7 @@ END;
 
 END;
                 } else { // Widok ogólny
-                    # code...
-                } */
-                echo <<< END
+                    echo <<< END
                 <div class="row justify-content-between">
                     <div class="col">
                         <h3 class="text-center">Przychody</h3>
@@ -358,6 +466,7 @@ END;
                 </div>
 
 END;
+                }
                 ?>
             </section>
 
