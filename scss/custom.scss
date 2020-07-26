@@ -25,21 +25,19 @@ header {
   }
 }
 
+ul {
+  list-style: none;
+}
+
 .welcome {
   img {
     height: 275px;
   }
 }
 
-.adding-incomes {
-  position: relative;
-}
-
 .container-custom {
   width: 576px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto;
 }
 
 .middle-col {
@@ -52,7 +50,6 @@ footer {
 
 .main-footer {
   position: absolute;
-  left: 0;
   bottom: 0;
 }
 
@@ -79,6 +76,10 @@ footer {
     }
   }
 
+  .container-custom {
+    width: 90vw;
+  }
+
   .welcome {
     img {
       height: 200px;
@@ -90,12 +91,6 @@ footer {
       .period-choice {
         margin-top: 5px;
       }
-    }
-  }
-
-  .adding-incomes {
-    .container-custom {
-      width: 100%;
     }
   }
 }

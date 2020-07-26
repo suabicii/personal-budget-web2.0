@@ -106,7 +106,7 @@ if (isset($_SESSION['adding_expense'])) unset($_SESSION['adding_expense']);
                         ?>
                         <div class="input-group mt-2 mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
-                            <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
+                            <textarea name="comment" id="comment" rows="2" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
                         <button type="submit" class="btn btn-some">Dodaj</button>
                         <a href="main.php" class="btn btn-danger">Anuluj</a>
@@ -134,7 +134,8 @@ if (isset($_SESSION['adding_expense'])) unset($_SESSION['adding_expense']);
             </div>
         </div>
     </main>
-
+    <div class="space">
+    </div>
     <footer class="main-footer">
         <div class="container-fluid bg-dark pt-1 mt-2">
             <div class="row">
