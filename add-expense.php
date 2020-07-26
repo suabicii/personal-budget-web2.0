@@ -57,7 +57,7 @@ if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
     </nav>
 
     <main>
-        <section class="adding-incomes">
+        <section class="adding-expenses">
             <div class="container-custom border rounded bg-white mt-2 py-2">
                 <div class="row justify-content-center">
                     <form action="insert.php" method="post">
@@ -132,7 +132,7 @@ if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                         ?>
                         <div class="input-group mt-2 mb-2">
                             <label class="sr-only" for="comment">Komentarz (opcjonalnie)</label>
-                            <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
+                            <textarea name="comment" id="comment" rows="2" class="form-control" placeholder="Komentarz (opcjonalnie)"></textarea>
                         </div>
                         <button type="submit" class="btn btn-some">Dodaj</button>
                         <a href="main.php" class="btn btn-danger">Anuluj</a>
@@ -162,7 +162,7 @@ if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
     </main>
 
     <footer class="main-footer">
-        <div class="container-fluid bg-dark pt-1 mt-2">
+        <div class="container-fluid bg-dark pt-1">
             <div class="row">
                 <div class="col">
                     <h6 class="text-white text-center">Copyright &copy; 2020 Michael Slabikovsky</h6>

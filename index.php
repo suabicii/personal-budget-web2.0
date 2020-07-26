@@ -36,16 +36,16 @@ if (isset($_SESSION['logged_id'])) {
                 <h2>Chcesz zapanować nad własnymi finansami? <i class="fas fa-comment-dollar"></i></h2>
                 <p class="text-muted">Ta aplikacja idealnie Ci w tym pomoże! <i class="far fa-thumbs-up"></i></p>
                 <h3>Jak zacząć?</h3>
-                <ol>
-                    <li>Załóż konto/zaloguj się</li>
-                    <li>Dodawaj swoje <strong>przychody i wydatki</strong> do aplikacji</li>
-                    <li>Przejdź do <strong>bilansu</strong> i obserwuj swoje finanse - sprawdź czy nie jesteś "pod
+                <ul>
+                    <li>1. Załóż konto/zaloguj się</li>
+                    <li>2. Dodawaj swoje <strong>przychody i wydatki</strong> do aplikacji</li>
+                    <li>3. Przejdź do <strong>bilansu</strong> i obserwuj swoje finanse - sprawdź czy nie jesteś "pod
                         kreską" <i class="far fa-smile"></i></li>
-                </ol>
+                </ul>
             </div>
         </section>
         <section class="main-menu mt-3">
-            <div class="container py-3 px-0">
+            <div class="container py-3">
                 <div class="row">
                     <div class="col-md-6">
                         <button class="btn btn-lg btn-block btn-primary mb-3 mb-md-0" data-toggle="modal" data-target="#registerModal">Zarejestruj się <i class="fas fa-user-plus"></i></button>
@@ -249,10 +249,6 @@ END;
     }
 
     ?>
-
-    <!-- Skrypty do logowania i rejestracji -->
-    <!-- <script src="user-menu.js"></script> -->
-    <script src="show-modal.js"></script>
 </body>
 
 </html>
