@@ -262,7 +262,7 @@ END;
                             <tbody>
 END;
 
-                    $query = $db->prepare("SELECT {$income_category}, name, amount FROM incomes, incomes_category_assigned_to_users WHERE incomes.user_id = 1 AND incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' GROUP BY {$income_category} ORDER BY amount DESC");
+                    $query = $db->prepare("SELECT {$income_category}, name, SUM(amount) FROM incomes, incomes_category_assigned_to_users WHERE incomes.user_id = {$_SESSION['logged_id']} AND incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' GROUP BY {$income_category} ORDER BY SUM(amount) DESC");
                     $query->execute();
 
                     $amountOfSummedIncomes = $query->rowCount();
@@ -271,11 +271,15 @@ END;
                     $j = 1;
                     for ($i = 0; $i < $amountOfSummedIncomes; $i++) {
                         $categoryName = $incomesCategories["{$summedIncomes[$i]['name']}"];
+
+                        if ($summedIncomes[$i]['name'] == 'Another') $categoryIdForJS = 'another-incomes';
+                        else $categoryIdForJS = $summedIncomes[$i]['name'];
+
                         echo <<< END
                                     <tr>
                                         <th scope="row">{$j}</th>
                                         <td>{$categoryName}</td>
-                                        <td>{$summedIncomes[$i]['amount']}</td>
+                                        <td id="{$categoryIdForJS}">{$summedIncomes[$i]['SUM(amount)']}</td>
                                     </tr>
 END;
                         $j++;
@@ -307,7 +311,7 @@ END;
                             <tbody>
 END;
 
-                    $query = $db->prepare("SELECT {$expense_category}, name, amount FROM expenses, expenses_category_assigned_to_users WHERE expenses.user_id = 1 AND expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' GROUP BY {$expense_category} ORDER BY amount DESC");
+                    $query = $db->prepare("SELECT {$expense_category}, name, SUM(amount) FROM expenses, expenses_category_assigned_to_users WHERE expenses.user_id = {$_SESSION['logged_id']} AND expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' GROUP BY {$expense_category} ORDER BY SUM(amount) DESC");
                     $query->execute();
 
                     $amountOfSummedExpenses = $query->rowCount();
@@ -316,11 +320,17 @@ END;
                     $j = 1;
                     for ($i = 0; $i < $amountOfSummedExpenses; $i++) {
                         $categoryName = $expensesCategories["{$summedExpenses[$i]['name']}"];
+
+                        if ($summedExpenses[$i]['name'] == 'Another') $categoryIdForJS = 'another-expenses';
+                        else if ($summedExpenses[$i]['name'] == 'For Retirement') $categoryIdForJS = 'retirement';
+                        else if ($summedExpenses[$i]['name'] == 'Debt Repayment') $categoryIdForJS = 'debt-repayment';
+                        else $categoryIdForJS = $summedExpenses[$i]['name'];
+
                         echo <<< END
                                     <tr>
                                         <th scope="row">{$j}</th>
                                         <td>{$categoryName}</td>
-                                        <td>{$summedExpenses[$i]['amount']}</td>
+                                        <td id="{$categoryIdForJS}">{$summedExpenses[$i]['SUM(amount)']}</td>
                                     </tr>
 END;
                         $j++;
