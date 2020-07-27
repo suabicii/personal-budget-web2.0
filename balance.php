@@ -140,6 +140,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
                 // Wstawianie wartości do tabel
                 if (isset($_SESSION['particular'])) { // Widok szczegółowy
+                    echo '<script>let particularView = true;</script>';
                     echo <<< END
                     <div class="row justify-content-between">
                         <div class="col">
@@ -167,12 +168,16 @@ END;
 
                     for ($i = 0; $i < $amountOfAllIncomes; $i++) {
                         $categoryName = $incomesCategories["{$allIncomes[$i]['name']}"];
+
+                        if ($allIncomes[$i]['name'] == 'Another') $categoryClassForJS = 'another-incomes';
+                        else $categoryClassForJS = $allIncomes[$i]['name'];
+
                         echo <<< END
                                     <tr>
                                         <th scope="row">{$j}</th>
                                         <td>{$categoryName}</td>
                                         <td>{$allIncomes[$i]['date_of_income']}</td>
-                                        <td>{$allIncomes[$i]['amount']}</td>
+                                        <td class="{$categoryClassForJS}">{$allIncomes[$i]['amount']}</td>
                                         <td>{$allIncomes[$i]['income_comment']}</td>
                                     </tr>
 END;
@@ -220,12 +225,18 @@ END;
 
                     for ($i = 0; $i < $amountOfAllExpenses; $i++) {
                         $categoryName = $expensesCategories["{$allExpenses[$i]['name']}"];
+
+                        if ($allExpenses[$i]['name'] == 'Another') $categoryClassForJS = 'another-expenses';
+                        else if ($allExpenses[$i]['name'] == 'For Retirement') $categoryClassForJS = 'retirement';
+                        else if ($allExpenses[$i]['name'] == 'Debt Repayment') $categoryClassForJS = 'debt-repayment';
+                        else $categoryClassForJS = $allExpenses[$i]['name'];
+
                         echo <<< END
                                     <tr>
                                         <th scope="row">{$j}</th>
                                         <td>{$categoryName}</td>
                                         <td>{$allExpenses[$i]['date_of_expense']}</td>
-                                        <td>{$allExpenses[$i]['amount']}</td>
+                                        <td class="{$categoryClassForJS}">{$allExpenses[$i]['amount']}</td>
                                         <td>{$allExpenses[$i]['expense_comment']}</td>
                                     </tr>
 END;
@@ -247,6 +258,7 @@ END;
 
 END;
                 } else { // Widok ogólny
+                    echo '<script>let particularView = false;</script>';
                     echo <<< END
                     <div class="row justify-content-between">
                     <div class="col">
