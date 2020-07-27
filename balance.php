@@ -129,75 +129,6 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
                     $endDateForQuery = $endDate->format('Y-m-d');
                 }
 
-                // Funkcje umożliwiające sumowanie przychodów/wydatków w pętlach for
-                function getFirstIncomeCategoryId($amountOfIncomesCategories)
-                {
-                    if ($_SESSION['logged_id'] > 1) $i = $amountOfIncomesCategories + 1;
-                    else $i = 1;
-
-                    return $i;
-                }
-
-                function getLastIncomeCategoryId($amountOfExpensesCategories)
-                {
-                    if ($_SESSION['logged_id'] > 1) $lastIncomeCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
-                    else $lastIncomeCategoryId = $amountOfExpensesCategories;
-
-                    return $lastIncomeCategoryId;
-                }
-
-                function getFirstExpenseCategoryId($amountOfExpensesCategories)
-                {
-                    if ($_SESSION['logged_id'] > 1) $i = $amountOfExpensesCategories + 1;
-                    else $i = 1;
-
-                    return $i;
-                }
-
-                function getLastExpenseCategoryId($amountOfExpensesCategories)
-                {
-                    if ($_SESSION['logged_id'] > 1) $lastExpenseCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
-                    else $lastExpenseCategoryId = $amountOfExpensesCategories;
-
-                    return $lastExpenseCategoryId;
-                }
-
-                // Licznik do przypisywania przychodów/wydatków w taki sposób,
-                // aby indeksy miały wartość od 1 do n
-                $j = 1;
-
-                // Sumowanie przychodów wg kategorii
-                $lastIncomeCategoryId = getLastIncomeCategoryId($amountOfIncomesCategories);
-                for ($i = getFirstIncomeCategoryId($amountOfIncomesCategories); $i <= $lastIncomeCategoryId; $i++) {
-                    $query = $db->prepare("SELECT SUM(amount) FROM incomes WHERE {$income_category} = {$i} AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
-                    $query->execute();
-                    $sumOfIncomesInCategory[$j] = $query->fetch();
-                    $j++;
-                }
-
-                $query = $db->prepare('SELECT * FROM expenses_category_default');
-                $query->execute();
-                $amountOfExpensesCategories = $query->rowCount();
-
-                if ($_SESSION['logged_id'] > 1) {
-                    $lastExpenseCategoryId = $amountOfExpensesCategories * $_SESSION['logged_id'];
-                    $i = $amountOfExpensesCategories + 1;
-                } else {
-                    $lastExpenseCategoryId = $amountOfExpensesCategories;
-                    $i = 1;
-                }
-
-                $j = 1;
-
-                // Sumowanie wydatków wg kategorii
-                $lastExpenseCategoryId = getLastIncomeCategoryId($amountOfExpensesCategories);
-                for ($i = getFirstIncomeCategoryId($amountOfExpensesCategories); $i <= $lastExpenseCategoryId; $i++) {
-                    $query = $db->prepare("SELECT SUM(amount) FROM expenses WHERE {$expense_category} = {$i} AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}'");
-                    $query->execute();
-                    $sumOfExpensesInCategory[$j] = $query->fetch();
-                    $j++;
-                }
-
                 // Sumowanie wszystkich przychodów i wydatków
                 foreach ($incomes as $income) {
                     $sumOfAllIncomes += $income['amount'];
@@ -209,6 +140,7 @@ else if (isset($_SESSION['adding_income'])) unset($_SESSION['adding_income']);
 
                 // Wstawianie wartości do tabel
                 if (isset($_SESSION['particular'])) { // Widok szczegółowy
+                    echo '<script>let particularView = true;</script>';
                     echo <<< END
                     <div class="row justify-content-between">
                         <div class="col">
@@ -236,12 +168,16 @@ END;
 
                     for ($i = 0; $i < $amountOfAllIncomes; $i++) {
                         $categoryName = $incomesCategories["{$allIncomes[$i]['name']}"];
+
+                        if ($allIncomes[$i]['name'] == 'Another') $categoryClassForJS = 'another-incomes';
+                        else $categoryClassForJS = $allIncomes[$i]['name'];
+
                         echo <<< END
                                     <tr>
                                         <th scope="row">{$j}</th>
                                         <td>{$categoryName}</td>
                                         <td>{$allIncomes[$i]['date_of_income']}</td>
-                                        <td>{$allIncomes[$i]['amount']}</td>
+                                        <td class="{$categoryClassForJS}">{$allIncomes[$i]['amount']}</td>
                                         <td>{$allIncomes[$i]['income_comment']}</td>
                                     </tr>
 END;
@@ -289,12 +225,18 @@ END;
 
                     for ($i = 0; $i < $amountOfAllExpenses; $i++) {
                         $categoryName = $expensesCategories["{$allExpenses[$i]['name']}"];
+
+                        if ($allExpenses[$i]['name'] == 'Another') $categoryClassForJS = 'another-expenses';
+                        else if ($allExpenses[$i]['name'] == 'For Retirement') $categoryClassForJS = 'retirement';
+                        else if ($allExpenses[$i]['name'] == 'Debt Repayment') $categoryClassForJS = 'debt-repayment';
+                        else $categoryClassForJS = $allExpenses[$i]['name'];
+
                         echo <<< END
                                     <tr>
                                         <th scope="row">{$j}</th>
                                         <td>{$categoryName}</td>
                                         <td>{$allExpenses[$i]['date_of_expense']}</td>
-                                        <td>{$allExpenses[$i]['amount']}</td>
+                                        <td class="{$categoryClassForJS}">{$allExpenses[$i]['amount']}</td>
                                         <td>{$allExpenses[$i]['expense_comment']}</td>
                                     </tr>
 END;
@@ -316,8 +258,9 @@ END;
 
 END;
                 } else { // Widok ogólny
+                    echo '<script>let particularView = false;</script>';
                     echo <<< END
-                <div class="row justify-content-between">
+                    <div class="row justify-content-between">
                     <div class="col">
                         <h3 class="text-center">Przychody</h3>
                         <table class="table table-bordered">
@@ -329,36 +272,44 @@ END;
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Wynagrodzenie</td>
-                                    <td id="salary">{$sumOfIncomesInCategory[1]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Odsetki bankowe</td>
-                                    <td id="interest">{$sumOfIncomesInCategory[2]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Sprzedaż na allegro</td>
-                                    <td id="allegro">{$sumOfIncomesInCategory[3]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">4</th>
-                                    <td>Inne</td>
-                                    <td id="another-incomes">{$sumOfIncomesInCategory[4]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Razem</th>
-                                    <td class="text-center">-</td>
-                                    <th id="incomes">{$sumOfAllIncomes}</th>
-                                </tr>
-                            </tbody>
-                        </table>
+END;
+
+                    $query = $db->prepare("SELECT {$income_category}, name, SUM(amount) FROM incomes, incomes_category_assigned_to_users WHERE incomes.user_id = {$_SESSION['logged_id']} AND incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id AND date_of_income BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' GROUP BY {$income_category} ORDER BY SUM(amount) DESC");
+                    $query->execute();
+
+                    $amountOfSummedIncomes = $query->rowCount();
+                    $summedIncomes = $query->fetchAll();
+
+                    $j = 1;
+                    for ($i = 0; $i < $amountOfSummedIncomes; $i++) {
+                        $categoryName = $incomesCategories["{$summedIncomes[$i]['name']}"];
+
+                        if ($summedIncomes[$i]['name'] == 'Another') $categoryIdForJS = 'another-incomes';
+                        else $categoryIdForJS = $summedIncomes[$i]['name'];
+
+                        echo <<< END
+                                    <tr>
+                                        <th scope="row">{$j}</th>
+                                        <td>{$categoryName}</td>
+                                        <td id="{$categoryIdForJS}">{$summedIncomes[$i]['SUM(amount)']}</td>
+                                    </tr>
+END;
+                        $j++;
+                    }
+
+                    echo <<< END
+                                    <tr>
+                                        <th scope="row">Razem</th>
+                                        <td class="text-center">-</td>
+                                        <th id="incomes">{$sumOfAllIncomes}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="row mt-3">
+END;
+                    echo <<< END
+                <div class="row justify-content-between">
                     <div class="col">
                         <h3 class="text-center">Wydatki</h3>
                         <table class="table table-bordered">
@@ -370,101 +321,43 @@ END;
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Jedzenie</td>
-                                    <td id="food">{$sumOfExpensesInCategory[3]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Mieszkanie</td>
-                                    <td id="apartments">{$sumOfExpensesInCategory[4]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Transport</td>
-                                    <td id="transport">{$sumOfExpensesInCategory[1]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">4</th>
-                                    <td>Telekomunikacja</td>
-                                    <td id="telecommunication">{$sumOfExpensesInCategory[5]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">5</th>
-                                    <td>Opieka zdrowotna</td>
-                                    <td id="health">{$sumOfExpensesInCategory[6]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">6</th>
-                                    <td>Ubranie</td>
-                                    <td id="clothes">{$sumOfExpensesInCategory[7]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">7</th>
-                                    <td>Higiena</td>
-                                    <td id="hygiene">{$sumOfExpensesInCategory[8]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">8</th>
-                                    <td>Dzieci</td>
-                                    <td id="kids">{$sumOfExpensesInCategory[9]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">9</th>
-                                    <td>Rozrywka</td>
-                                    <td id="recreation">{$sumOfExpensesInCategory[10]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">10</th>
-                                    <td>Wycieczka</td>
-                                    <td id="trip">{$sumOfExpensesInCategory[11]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">11</th>
-                                    <td>Szkolenia</td>
-                                    <td id="courses">{$sumOfExpensesInCategory[17]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">12</th>
-                                    <td>Książki</td>
-                                    <td id="books">{$sumOfExpensesInCategory[2]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">13</th>
-                                    <td>Oszczędności</td>
-                                    <td id="savings">{$sumOfExpensesInCategory[12]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">14</th>
-                                    <td>Na złotą jesień, czyli emeryturę</td>
-                                    <td id="retirement">{$sumOfExpensesInCategory[13]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">15</th>
-                                    <td>Spłata długów</td>
-                                    <td id="debt-repayment">{$sumOfExpensesInCategory[14]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">16</th>
-                                    <td>Darowizna</td>
-                                    <td id="gift">{$sumOfExpensesInCategory[15]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">17</th>
-                                    <td>Inne wydatki</td>
-                                    <td id="another-expenses">{$sumOfExpensesInCategory[16]['SUM(amount)']}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Razem</th>
-                                    <td class="text-center">-</td>
-                                    <th id="expenses">{$sumOfAllExpenses}</th>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+END;
 
+                    $query = $db->prepare("SELECT {$expense_category}, name, SUM(amount) FROM expenses, expenses_category_assigned_to_users WHERE expenses.user_id = {$_SESSION['logged_id']} AND expenses_category_assigned_to_users.id = expenses.expense_category_assigned_to_user_id AND date_of_expense BETWEEN '{$startDateForQuery}' AND '{$endDateForQuery}' GROUP BY {$expense_category} ORDER BY SUM(amount) DESC");
+                    $query->execute();
+
+                    $amountOfSummedExpenses = $query->rowCount();
+                    $summedExpenses = $query->fetchAll();
+
+                    $j = 1;
+                    for ($i = 0; $i < $amountOfSummedExpenses; $i++) {
+                        $categoryName = $expensesCategories["{$summedExpenses[$i]['name']}"];
+
+                        if ($summedExpenses[$i]['name'] == 'Another') $categoryIdForJS = 'another-expenses';
+                        else if ($summedExpenses[$i]['name'] == 'For Retirement') $categoryIdForJS = 'retirement';
+                        else if ($summedExpenses[$i]['name'] == 'Debt Repayment') $categoryIdForJS = 'debt-repayment';
+                        else $categoryIdForJS = $summedExpenses[$i]['name'];
+
+                        echo <<< END
+                                    <tr>
+                                        <th scope="row">{$j}</th>
+                                        <td>{$categoryName}</td>
+                                        <td id="{$categoryIdForJS}">{$summedExpenses[$i]['SUM(amount)']}</td>
+                                    </tr>
+END;
+                        $j++;
+                    }
+
+                    echo <<< END
+                                    <tr>
+                                        <th scope="row">Razem</th>
+                                        <td class="text-center">-</td>
+                                        <th id="expenses">{$sumOfAllExpenses}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 END;
                 }
                 ?>
